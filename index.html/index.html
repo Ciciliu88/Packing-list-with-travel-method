@@ -58,10 +58,10 @@ textarea{font:inherit;color:inherit;background:var(--paper);border:1.5px solid v
 .weather-day b{display:block;font-size:.88rem}
 .weather-day .temp{font-size:1.05rem;font-weight:800;margin:5px 0}
 .weather-day small{display:block;color:var(--mute);font-size:.78rem}
-.route-stop{display:grid;grid-template-columns:28px minmax(0,1.5fr) minmax(112px,.8fr) 36px;gap:8px;align-items:center;margin:10px 0;padding:12px;background:var(--paper);border:1px solid var(--line);border-radius:14px}route-stop .route-booked{grid-column:2/4}.route-stop .x{grid-column:4;grid-row:1}
+.route-stop{display:grid;grid-template-columns:28px minmax(0,1.5fr) minmax(112px,.8fr) 36px;gap:8px;align-items:center;margin:10px 0;padding:12px;background:var(--paper);border:1px solid var(--line);border-radius:14px}.route-stop .route-booked{grid-column:2/4;display:flex;align-items:center;gap:8px;min-height:34px;white-space:nowrap}.route-stop .route-booked input.stop-booked{display:inline-block!important;appearance:auto!important;-webkit-appearance:checkbox!important;width:20px!important;height:20px!important;min-width:20px;flex:none;margin:0;opacity:1;visibility:visible;accent-color:var(--ok);padding:0}.route-stop .route-booked .ticket-status{display:inline-block;line-height:1.2}.route-stop .x{grid-column:4;grid-row:1}
 .route-stop input,.route-stop select{padding:9px 10px}.place-wrap{position:relative;min-width:0}.place-suggestions{position:absolute;z-index:1000;top:100%;left:0;right:0;background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px #14233b22;max-height:220px;overflow:auto}.place-suggestions button{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:9px 10px;font-size:.88rem}.route-stop .stop-place,.route-stop .stop-mode{min-width:0}.weather-grid{gap:6px;margin-top:8px}.weather-day{padding:8px 4px}.weather-day .temp{font-size:.98rem;margin:3px 0}.weather-day small{font-size:.72rem}.date-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}.date-pair>div{min-width:0}.date-pair input{border-radius:13px;min-height:48px;padding:10px 12px;box-shadow:0 2px 8px #14233b0a}.date-pair label{font-weight:600;margin:0 0 6px}.item{gap:7px;padding:8px 0}.item-icon{width:25px;font-size:1.08rem}.item input[type=checkbox]{width:21px;height:21px}
 .drag-handle{border:0;background:transparent;color:var(--mute);font-size:1.2rem;padding:4px 0;cursor:grab;touch-action:none}.drag-handle:active{cursor:grabbing}.route-stop.dragging{opacity:.45}.route-stop.drag-over{outline:2px dashed var(--blue);outline-offset:2px}.route-stop .x{font-size:1.2rem}.route-booked{display:flex;align-items:center;gap:5px;white-space:nowrap;font-size:.78rem;color:var(--mute)}.route-booked input{width:16px;height:16px;accent-color:var(--ok)}
-@media(max-width:520px){main{padding:14px 12px 48px}.route-stop{grid-template-columns:24px minmax(0,1fr) minmax(100px,.72fr) 30px;gap:6px;padding:9px}route-stop .route-booked{grid-column:2/4}.route-stop .x{grid-column:4;grid-row:1}.date-pair{gap:10px}.date-pair input{font-size:16px}.card{padding:12px;border-radius:15px}.weather-day{padding:7px 3px}.weather-day .temp{font-size:.9rem}}
+@media(max-width:520px){main{padding:14px 12px 48px}.route-stop{grid-template-columns:24px minmax(0,1fr) minmax(100px,.72fr) 30px;gap:6px;padding:9px}.route-stop .route-booked{grid-column:2/4;display:flex;align-items:center;gap:8px;min-height:34px;white-space:nowrap}.route-stop .route-booked input.stop-booked{display:inline-block!important;appearance:auto!important;-webkit-appearance:checkbox!important;width:20px!important;height:20px!important;min-width:20px;flex:none;margin:0;opacity:1;visibility:visible;accent-color:var(--ok);padding:0}.route-stop .route-booked .ticket-status{display:inline-block;line-height:1.2}.route-stop .x{grid-column:4;grid-row:1}.date-pair{gap:10px}.date-pair input{font-size:16px}.card{padding:12px;border-radius:15px}.weather-day{padding:7px 3px}.weather-day .temp{font-size:.9rem}}
 .route-line{display:flex;align-items:center;gap:8px;color:var(--mute);font-size:.88rem;padding:3px 0}
 
 .menu-wrap{position:relative}.planner-section{margin:12px 0}.planner-heading{cursor:pointer;list-style:none;font-size:1.2rem;font-weight:700;padding:12px 2px;display:flex;align-items:center;gap:8px}.planner-heading::-webkit-details-marker{display:none}.planner-heading:after{content:"▾";margin-left:auto;color:var(--mute);transition:transform .15s}.planner-section:not([open])>.planner-heading:after{transform:rotate(-90deg)}.planner-section>.card{margin-top:4px}.menu-panel[hidden]{display:none!important}.menu-panel{position:absolute;right:0;top:calc(100% + 6px);z-index:30;min-width:190px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:0 10px 28px #14233b24}.menu-panel button{display:block;width:100%;text-align:left;padding:10px;border:0;border-radius:8px;background:transparent;color:var(--ink)}.menu-panel button:hover{background:var(--paper)}.menu-panel button.danger{color:var(--red)}.emoji-picker{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.emoji-picker button{border:1px solid var(--line);background:var(--paper);border-radius:9px;padding:7px;font-size:1.2rem}.emoji-picker button[aria-pressed=true]{outline:2px solid var(--blue);background:var(--card)}
@@ -104,7 +104,15 @@ const em=n=>(all()[String(n).split(" + ")[0]]||{e:"🧳"}).e;
 const BASE=[["Passport or ID card","Documents"],["Tickets and bookings","Documents"],["Wallet and cards","Documents"],["Keys","Gear"],["Phone and charger","Tech"],["Toothbrush and toothpaste","Toiletries"],["Deodorant","Toiletries"],["Medication","Toiletries"]];
 const CATS=["Documents","Clothes","Toiletries","Tech","Gear","Kitchen","Before leaving"];
 let S={trips:[],cur:null,form:{types:["Travel"]}};
-try{const r=localStorage.getItem("packing-shared-v1");if(r)S.trips=JSON.parse(r)||[]}catch(e){}
+try{
+ const savedProfile=(localStorage.getItem("packing-profile-name-v1")||"").trim();
+ const profileKey=savedProfile?"packing-shared-v1:profile:"+savedProfile.toLocaleLowerCase():"";
+ const profileTrips=profileKey?localStorage.getItem(profileKey):null;
+ const r=profileTrips||localStorage.getItem("packing-shared-v1");
+ if(r)S.trips=JSON.parse(r)||[];
+ if(profileTrips)localStorage.setItem("packing-shared-v1",profileTrips);
+ localStorage.removeItem("packing-profile-name-v1");
+}catch(e){}
 const save=()=>{try{localStorage.setItem("packing-shared-v1",JSON.stringify(S.trips))}catch(e){}};
 const uid=()=>Math.random().toString(36).slice(2,9);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -153,6 +161,7 @@ function pct(t){return t.items.length?Math.round(t.items.filter(i=>i.d).length/t
 function home(){
  const a=$("app"),F=S.form;
  a.innerHTML=`<h1>Packing lists</h1><p class="sub">One list for every trip.</p>
+
  ${S.trips.length?S.trips.map(t=>`<div class="trip"><button type="button" class="trip-open" data-open="${t.id}" style="width:100%;text-align:left;background:none;border:0;color:inherit;padding:0"><b>${em(t.type)} ${esc(t.name)}</b><div style="color:var(--mute)">${t.days} days · ${t.items.filter(i=>i.d).length} of ${t.items.length} packed${t.sd?" · "+cdTxt(t):""}</div><div class="bar"><i style="width:${pct(t)}%"></i></div></button><div class="route-tools" style="margin-top:8px"><button type="button" class="btn ghost" data-backup-trip="${t.id}">⬇ Backup this trip</button></div></div>`).join(""):`<div class="empty">No trips yet. Plan your first one below.</div>`}
  <h2>New trip</h2>
  <div class="card">
@@ -281,9 +290,8 @@ function trip(){
  a.innerHTML=`<div class="top"><button class="btn ghost" id="back">Back</button><div class="menu-wrap"><button class="btn ghost" id="tripmenu" aria-expanded="false">Trip options ▾</button><div class="menu-panel" id="tripmenu-panel" hidden><button type="button" id="rename">✎ Rename trip</button><button type="button" class="danger" id="del">Delete trip</button></div></div></div>
  <h1>${em(t.type)} ${esc(t.name)}</h1>
  <p class="sub">${t.days} days · <span id="pc">${pct(t)}</span>% packed</p>
- <div class="card" style="margin:10px 0"><div class="row" style="justify-content:space-between"><b>Packing progress</b><span><b>${t.items.filter(i=>i.d).length}</b> / ${t.items.length} packed</span></div><div class="bar" style="height:12px;margin-top:8px"><i style="width:${pct(t)}%"></i></div><div class="wx" style="margin-top:7px">${t.items.filter(i=>!i.d).length} items remaining · ${new Set(t.items.map(i=>i.c)).size} categories</div></div>
+ <div class="card" style="margin:10px 0"><div class="row" style="justify-content:space-between"><b>Packing progress</b><span><b id="packed-count">${t.items.filter(i=>i.d).length}</b> / <span id="total-count">${t.items.length}</span> packed</span></div><div class="bar" style="height:12px;margin-top:8px"><i id="progress-bar" style="width:${pct(t)}%"></i></div><div class="wx" style="margin-top:7px"><span id="remaining-count">${t.items.filter(i=>!i.d).length}</span> items remaining · <span id="category-count">${new Set(t.items.map(i=>i.c)).size}</span> categories</div></div>
  ${cdCard(t)}
- <div class="bar" style="margin:-8px 0 8px;height:10px"><i id="pb" style="width:${pct(t)}%"></i></div>
  ${wxCard(t)}
  <div class="row" style="margin:12px 0"><input id="item-search" placeholder="Search packing items…" aria-label="Search packing items"><select id="item-filter" style="max-width:170px"><option value="all">All items</option><option value="todo">Not packed</option><option value="done">Packed</option></select></div>
  <div id="item-groups">${groups.length?groups.map(([c,list])=>`<details class="category-group" open><summary>${CATEMOJI[c]||"📦"} ${esc(LANG==="de"?(DECAT[c]||c):c)} <small style="color:var(--mute);font-weight:400">(${list.length})</small></summary><div class="card" style="padding:4px 14px">${list.map(i=>`<div class="item ${i.d?"done":""}" data-item-row="${i.id}"><input type="checkbox" id="c${i.id}" data-id="${i.id}" ${i.d?"checked":""}><span class="item-icon">${itemEmoji(i.t)}</span><span class="item-text"><label for="c${i.id}" style="margin:0;color:inherit;font-size:1rem;cursor:pointer">${esc(i.t)}</label></span><button class="x" data-rm="${i.id}" aria-label="Remove ${esc(i.t)}">×</button></div>`).join("")}</div></details>`).join(""):`<div class="empty">This list is empty. Add your first item below.</div>`}</div>
@@ -322,9 +330,16 @@ function trip(){
  const applyItemFilter=()=>{const q=($("item-search")?.value||"").toLowerCase(),f=$("item-filter")?.value||"all";a.querySelectorAll("[data-item-row]").forEach(row=>{const it=t.items.find(x=>x.id===row.dataset.itemRow);row.style.display=(!q||it.t.toLowerCase().includes(q))&&(f==="all"||(f==="todo"&&!it.d)||(f==="done"&&it.d))?"":"none"})};
  $("item-search").oninput=applyItemFilter;$("item-filter").onchange=applyItemFilter;
  a.querySelectorAll("[data-id]").forEach(c=>c.onchange=()=>{
-  const it=t.items.find(i=>i.id===c.dataset.id);it.d=c.checked;save();
+  const it=t.items.find(i=>i.id===c.dataset.id);if(!it)return;it.d=c.checked;save();
   c.closest(".item").classList.toggle("done",it.d);
-  $("pc").textContent=pct(t);$("pb").style.width=pct(t)+"%";
+  const packed=t.items.filter(x=>x.d).length,remaining=t.items.length-packed,progress=pct(t);
+  $("pc").textContent=progress;
+  if($("packed-count"))$("packed-count").textContent=packed;
+  if($("total-count"))$("total-count").textContent=t.items.length;
+  if($("remaining-count"))$("remaining-count").textContent=remaining;
+  if($("category-count"))$("category-count").textContent=new Set(t.items.map(x=>x.c)).size;
+  if($("progress-bar"))$("progress-bar").style.width=progress+"%";
+  if($("pb"))$("pb").style.width=progress+"%";
  });
  a.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{const it=t.items.find(i=>i.id===b.dataset.rm);if(!it)return;if(!confirm("Remove “"+it.t+"” from this packing list?"))return;const idx=t.items.indexOf(it);t.items.splice(idx,1);save();const toast=document.createElement("div");toast.style.cssText="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:900;background:var(--ink);color:white;padding:12px 16px;border-radius:12px";toast.innerHTML=`Item removed. <button id="undo-item" style="margin-left:12px;color:white;background:transparent;border:0;text-decoration:underline">Undo</button>`;document.body.appendChild(toast);toast.querySelector("#undo-item").onclick=()=>{t.items.splice(idx,0,it);save();toast.remove();trip()};setTimeout(()=>toast.remove(),7000);trip()});
  const addItem=()=>{const v=$("ni").value.trim();if(!v){$("ni").focus();return}
