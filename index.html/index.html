@@ -58,10 +58,10 @@ textarea{font:inherit;color:inherit;background:var(--paper);border:1.5px solid v
 .weather-day b{display:block;font-size:.88rem}
 .weather-day .temp{font-size:1.05rem;font-weight:800;margin:5px 0}
 .weather-day small{display:block;color:var(--mute);font-size:.78rem}
-.route-stop{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(112px,.8fr) 36px;gap:8px;align-items:center;margin:10px 0;padding:12px;background:var(--paper);border:1px solid var(--line);border-radius:14px}.stop-stay{grid-column:1/3;display:flex;align-items:center;gap:8px}.stop-stay label{margin:0;font-size:.78rem;white-space:nowrap}.stop-stay input{max-width:84px;padding:8px 10px}.route-stop .route-booked{grid-column:1/3}.route-stop .x{grid-column:3;grid-row:1}
+.route-stop{display:grid;grid-template-columns:28px minmax(0,1.5fr) minmax(112px,.8fr) 36px;gap:8px;align-items:center;margin:10px 0;padding:12px;background:var(--paper);border:1px solid var(--line);border-radius:14px}.stop-stay{grid-column:1/3;display:flex;align-items:center;gap:8px}.stop-stay label{margin:0;font-size:.78rem;white-space:nowrap}.stop-stay input{max-width:84px;padding:8px 10px}.route-stop .route-booked{grid-column:2/4}.route-stop .x{grid-column:4;grid-row:1}
 .route-stop input,.route-stop select{padding:9px 10px}.place-wrap{position:relative;min-width:0}.place-suggestions{position:absolute;z-index:1000;top:100%;left:0;right:0;background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px #14233b22;max-height:220px;overflow:auto}.place-suggestions button{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:9px 10px;font-size:.88rem}.route-stop .stop-place,.route-stop .stop-mode{min-width:0}.weather-grid{gap:6px;margin-top:8px}.weather-day{padding:8px 4px}.weather-day .temp{font-size:.98rem;margin:3px 0}.weather-day small{font-size:.72rem}.date-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}.date-pair>div{min-width:0}.date-pair input{border-radius:13px;min-height:48px;padding:10px 12px;box-shadow:0 2px 8px #14233b0a}.date-pair label{font-weight:600;margin:0 0 6px}.item{gap:7px;padding:8px 0}.item-icon{width:25px;font-size:1.08rem}.item input[type=checkbox]{width:21px;height:21px}
-.route-stop .x{font-size:1.2rem}.route-booked{display:flex;align-items:center;gap:5px;white-space:nowrap;font-size:.78rem;color:var(--mute)}.route-booked input{width:16px;height:16px;accent-color:var(--ok)}
-@media(max-width:520px){main{padding:14px 12px 48px}.route-stop{grid-template-columns:minmax(0,1fr) minmax(100px,.72fr) 30px;gap:6px;padding:9px}.stop-stay{grid-column:1/3}.route-stop .route-booked{grid-column:1/3}.route-stop .x{grid-column:3;grid-row:1}.date-pair{gap:10px}.date-pair input{font-size:16px}.card{padding:12px;border-radius:15px}.weather-day{padding:7px 3px}.weather-day .temp{font-size:.9rem}}
+.drag-handle{border:0;background:transparent;color:var(--mute);font-size:1.2rem;padding:4px 0;cursor:grab;touch-action:none}.drag-handle:active{cursor:grabbing}.route-stop.dragging{opacity:.45}.route-stop.drag-over{outline:2px dashed var(--blue);outline-offset:2px}.route-stop .x{font-size:1.2rem}.route-booked{display:flex;align-items:center;gap:5px;white-space:nowrap;font-size:.78rem;color:var(--mute)}.route-booked input{width:16px;height:16px;accent-color:var(--ok)}
+@media(max-width:520px){main{padding:14px 12px 48px}.route-stop{grid-template-columns:24px minmax(0,1fr) minmax(100px,.72fr) 30px;gap:6px;padding:9px}.stop-stay{grid-column:1/3}.route-stop .route-booked{grid-column:2/4}.route-stop .x{grid-column:4;grid-row:1}.date-pair{gap:10px}.date-pair input{font-size:16px}.card{padding:12px;border-radius:15px}.weather-day{padding:7px 3px}.weather-day .temp{font-size:.9rem}}
 .route-line{display:flex;align-items:center;gap:8px;color:var(--mute);font-size:.88rem;padding:3px 0}
 
 .menu-wrap{position:relative}.menu-panel{position:absolute;right:0;top:calc(100% + 6px);z-index:30;min-width:190px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:0 10px 28px #14233b24}.menu-panel button{display:block;width:100%;text-align:left;padding:10px;border:0;border-radius:8px;background:transparent;color:var(--ink)}.menu-panel button:hover{background:var(--paper)}.menu-panel button.danger{color:var(--red)}.emoji-picker{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.emoji-picker button{border:1px solid var(--line);background:var(--paper);border-radius:9px;padding:7px;font-size:1.2rem}.emoji-picker button[aria-pressed=true]{outline:2px solid var(--blue);background:var(--card)}
@@ -251,8 +251,9 @@ function wxCard(t){
 function routeStopHTML(s,i){
  const modes=[["home","🏠 Home"],["plane","✈️ Airplane"],["train","🚆 Train"],["bus","🚌 Bus"],["car","🚗 Car"],["ship","🚢 Ship"],["walk","🚶 Walk"]];
  const first=i===0;
- return `<div class="route-stop" data-stop="${i}">
- <div class="place-wrap"><input aria-label="${first?"Starting point":"Destination"} ${i+1}" class="stop-place" maxlength="90" placeholder="${first?"Starting point (e.g. Home)":"Search city or destination"}" value="${esc(s.place||"")}" autocomplete="off"><div class="place-suggestions" hidden></div></div>
+ return `<div class="route-stop" data-stop="${i}" data-index="${i}">
+ <button type="button" class="drag-handle" ${first?'disabled title="Starting point"':'draggable="true" title="Drag to reorder" aria-label="Drag to reorder stop"'}>${first?"⌂":"⠿"}</button>
+ <div class="place-wrap"><input aria-label="${first?"Starting point":"Destination"} ${i+1}" class="stop-place" maxlength="120" placeholder="${first?"Starting point (e.g. Home)":"Search city, airport or place"}" value="${esc(s.place||"")}" autocomplete="off"><div class="place-suggestions" hidden></div></div>
  <select class="stop-mode" aria-label="Transport to ${first?"starting point":"stop "+(i+1)}" ${first?"disabled":""}>${modes.map(([v,l])=>`<option value="${v}" ${((s.mode||(first?"home":"plane"))===v)?"selected":""}>${l}</option>`).join("")}</select>
  <label class="route-booked"><input type="checkbox" class="stop-booked" ${s.booked?"checked":""} ${first?"disabled":""}> ${LANG==="de"?"Ticket gebucht":LANG==="zh"?"车票已预订":"Ticket booked"}</label>
  <button type="button" class="x" data-removestop="${i}" aria-label="Remove stop">×</button>
@@ -276,23 +277,39 @@ function bindWx(t){
     if(el.value.trim().length<2){box.hidden=true;return}
     timer=setTimeout(async()=>{
      try{
-      const data=await(await fetch("https://geocoding-api.open-meteo.com/v1/search?count=8&language=en&name="+encodeURIComponent(el.value.trim()))).json();
-      const results=data.results||[];
-      box.innerHTML=results.map((r,j)=>`<button type="button" data-place-index="${j}">${esc([r.name,r.admin1,r.country].filter(Boolean).join(", "))}</button>`).join("")||`<div style="padding:10px;color:var(--mute)">No matching places found</div>`;
+      const data=await(await fetch("https://photon.komoot.io/api/?limit=8&lang=en&q="+encodeURIComponent(el.value.trim()))).json();
+      const results=(data.features||[]).filter(f=>f.geometry?.coordinates);
+      const label=r=>{const p=r.properties||{};return [p.name,p.city||p.locality,p.state,p.country].filter((v,j,a)=>v&&a.indexOf(v)===j).join(", ")};
+      box.innerHTML=results.map((r,j)=>`<button type="button" data-place-index="${j}">${esc(label(r)||"Unnamed place")} <small style="color:var(--mute)">· ${esc(r.properties?.type||"place")}</small></button>`).join("")||`<div style="padding:10px;color:var(--mute)">No matching places found</div>`;
       box.hidden=false;
       box.querySelectorAll("[data-place-index]").forEach(btn=>btn.onclick=()=>{
-       const r=results[Number(btn.dataset.placeIndex)];
-       route[i].place=[r.name,r.admin1,r.country].filter(Boolean).join(", ");
-       route[i].geo={lat:r.latitude,lon:r.longitude,name:r.name,country:r.country};
+       const r=results[Number(btn.dataset.placeIndex)],p=r.properties||{},c=r.geometry.coordinates;
+       route[i].place=label(r)||el.value.trim();
+       route[i].geo={lat:c[1],lon:c[0],name:p.name||route[i].place,country:p.country||"",country_code:(p.countrycode||"").toUpperCase()};
        el.value=route[i].place;box.hidden=true;save();
       });
      }catch(e){box.hidden=true}
-    },280);
+    },300);
    };
    el.onblur=()=>setTimeout(()=>{box.hidden=true},180);
   });
   editor.querySelectorAll(".stop-mode").forEach((el,i)=>el.onchange=()=>{route[i].mode=el.value});
   editor.querySelectorAll(".stop-booked").forEach((el,i)=>el.onchange=()=>{route[i].booked=el.checked;save()});
+
+  let draggedIndex=null;
+  editor.querySelectorAll(".drag-handle[draggable=true]").forEach(handle=>{
+   handle.ondragstart=e=>{draggedIndex=Number(handle.closest(".route-stop").dataset.index);e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain",String(draggedIndex));handle.closest(".route-stop").classList.add("dragging")};
+   handle.ondragend=()=>{editor.querySelectorAll(".route-stop").forEach(row=>row.classList.remove("dragging","drag-over"));draggedIndex=null};
+  });
+  editor.querySelectorAll(".route-stop").forEach(row=>{
+   row.ondragover=e=>{if(draggedIndex===null)return;e.preventDefault();row.classList.add("drag-over")};
+   row.ondragleave=()=>row.classList.remove("drag-over");
+   row.ondrop=e=>{
+    if(draggedIndex===null)return;e.preventDefault();const target=Number(row.dataset.index);row.classList.remove("drag-over");
+    if(draggedIndex===0||target===0||draggedIndex===target)return;
+    const moved=route.splice(draggedIndex,1)[0];route.splice(target,0,moved);redraw();save();
+   };
+  });
  };
  redraw();
  $("addstop").onclick=()=>{route.push({place:"",mode:"plane",booked:false,geo:null});redraw();editor.querySelectorAll(".stop-place")[route.length-1].focus()};
@@ -318,13 +335,19 @@ function countryFlag(code){
  return /^[A-Z]{2}$/.test(c)?String.fromCodePoint(...[...c].map(x=>127397+x.charCodeAt(0))):"📍";
 }
 async function geocodePlace(place,knownGeo){
- if(knownGeo&&Number.isFinite(knownGeo.lat)&&Number.isFinite(knownGeo.lon))return {lat:knownGeo.lat,lon:knownGeo.lon,name:knownGeo.name||place,country_code:knownGeo.country_code||knownGeo.countryCode||""};
- const url="https://geocoding-api.open-meteo.com/v1/search?count=10&language=en&name="+encodeURIComponent(place);
- const data=await(await fetch(url)).json();
- if(!data.results||!data.results.length)throw new Error("Could not find "+place+". Choose the correct city from the suggestions.");
+ if(knownGeo&&Number.isFinite(knownGeo.lat)&&Number.isFinite(knownGeo.lon)){
+  let code=knownGeo.country_code||knownGeo.countryCode||"";
+  let country=knownGeo.country||"";
+  if(!code){try{const rev=await(await fetch(`https://photon.komoot.io/reverse?lat=${knownGeo.lat}&lon=${knownGeo.lon}&lang=en`)).json();const rp=rev.features?.[0]?.properties||{};code=(rp.countrycode||"").toUpperCase();country=country||rp.country||""}catch(e){}}
+  return {lat:knownGeo.lat,lon:knownGeo.lon,name:knownGeo.name||place,country,country_code:code};
+ }
+ const data=await(await fetch("https://photon.komoot.io/api/?limit=8&lang=en&q="+encodeURIComponent(place))).json();
+ const features=data.features||[];
+ if(!features.length)throw new Error("Could not find "+place+". Choose a city, airport or place from the suggestions.");
  const q=place.toLowerCase();
- const r=data.results.find(x=>[x.name,x.admin1,x.country].filter(Boolean).join(", ").toLowerCase()===q)||data.results[0];
- return {lat:r.latitude,lon:r.longitude,name:r.name,country:r.country,country_code:r.country_code||""};
+ const f=features.find(x=>[x.properties?.name,x.properties?.city,x.properties?.state,x.properties?.country].filter(Boolean).join(", ").toLowerCase()===q)||features[0];
+ const p=f.properties||{},c=f.geometry.coordinates;
+ return {lat:c[1],lon:c[0],name:p.name||place,country:p.country||"",country_code:(p.countrycode||"").toUpperCase()};
 }
 async function getLegGeometry(a,b,mode){
  // OSRM's public demo server provides road routes; the OSM routing service provides walking routes.
@@ -349,19 +372,12 @@ async function drawRoute(t){
   t.routeGeo=points;save();mapEl.style.display="block";
   if(t.leafletMap){t.leafletMap.remove();t.leafletMap=null}
   const map=L.map("map",{scrollWheelZoom:false});
-  // Carto Voyager gives a detailed, realistic road-map appearance with clear labels.
-  const baseTiles=L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",{
-   subdomains:"abcd",maxZoom:20,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors · © <a href="https://carto.com/attributions">CARTO</a>'
-  });
-  baseTiles.on("tileerror",()=>{
-   if(map._fallbackTiles)return;
-   map._fallbackTiles=true;
-   baseTiles.remove();
-   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
-    maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-   }).addTo(map);
-  });
-  baseTiles.addTo(map);
+  // Use standard OpenStreetMap tiles directly. The previous CARTO tile URL
+  // returned an "API KEY REQUIRED" watermark instead of usable map tiles.
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
+   subdomains:"abc",maxZoom:19,
+   attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
   t.leafletMap=map;
   const bounds=[];let directCount=0;
   for(let i=0;i<points.length;i++){
@@ -392,13 +408,13 @@ async function loadWx(t){
  o.textContent="Loading forecast…";
  const loc=LANG==="de"?"de-DE":LANG==="zh"?"zh-CN":"en-GB",fd=x=>new Date(x+"T12:00:00").toLocaleDateString(loc,{weekday:"short",day:"numeric",month:"short"});
  const blocks=await Promise.all(list.map(async(c,i)=>{
-  const head=`<div style="margin-top:8px"><div class="top" style="margin:0"><b>${countryFlag(c.geo?.country_code)} ${esc(c.place)}</b><button type="button" class="x" data-wxdel="${i}" aria-label="Remove ${esc(c.place)}">×</button></div>`;
   try{
    const p=await geocodePlace(c.place,c.geo);
+   const head=`<div style="margin-top:8px"><div class="top" style="margin:0"><b>${countryFlag(p.country_code)} ${esc(c.place)}</b><button type="button" class="x" data-wxdel="${i}" aria-label="Remove ${esc(c.place)}">×</button></div>`;
    const d=(await(await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,wind_direction_10m_dominant&timezone=auto&forecast_days=3`)).json()).daily;
    if(!d?.time)throw 0;
    return head+`<div class="weather-grid">${d.time.map((x,k)=>{const deg=d.wind_direction_10m_dominant?.[k]??0,arrow=["↑","↗","→","↘","↓","↙","←","↖"][Math.round(deg/45)%8];return `<div class="weather-day"><b>${fd(x)}</b><div class="temp">${wmo(d.weather_code[k])} ${Math.round(d.temperature_2m_max[k])}° / ${Math.round(d.temperature_2m_min[k])}°</div><small>💧 ${d.precipitation_probability_max[k]??"–"}% · <span title="Wind direction">${arrow} ${Math.round(deg)}°</span> · ${Math.round(d.wind_speed_10m_max[k])} km/h</small></div>`}).join("")}</div></div>`;
-  }catch(e){return head+`<div class="wx">Forecast unavailable. Check the city name and internet connection.</div></div>`}
+  }catch(e){return `<div style="margin-top:8px"><div class="top" style="margin:0"><b>📍 ${esc(c.place)}</b><button type="button" class="x" data-wxdel="${i}" aria-label="Remove ${esc(c.place)}">×</button></div><div class="wx">Forecast unavailable. Check the city name and internet connection.</div></div>`}
  }));
  o.innerHTML=blocks.join("");
  o.querySelectorAll("[data-wxdel]").forEach(b=>b.onclick=()=>{t.wxCities=cityList(t).filter((_,i)=>i!==+b.dataset.wxdel);save();loadWx(t)});
