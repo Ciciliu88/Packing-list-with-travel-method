@@ -58,10 +58,10 @@ textarea{font:inherit;color:inherit;background:var(--paper);border:1.5px solid v
 .weather-day b{display:block;font-size:.88rem}
 .weather-day .temp{font-size:1.05rem;font-weight:800;margin:5px 0}
 .weather-day small{display:block;color:var(--mute);font-size:.78rem}
-.route-stop{display:grid;grid-template-columns:28px minmax(0,1.5fr) minmax(112px,.8fr) 36px;gap:8px;align-items:center;margin:10px 0;padding:12px;background:var(--paper);border:1px solid var(--line);border-radius:14px}.stop-stay{grid-column:1/3;display:flex;align-items:center;gap:8px}.stop-stay label{margin:0;font-size:.78rem;white-space:nowrap}.stop-stay input{max-width:84px;padding:8px 10px}.route-stop .route-booked{grid-column:2/4}.route-stop .x{grid-column:4;grid-row:1}
+.route-stop{display:grid;grid-template-columns:28px minmax(0,1.5fr) minmax(112px,.8fr) 36px;gap:8px;align-items:center;margin:10px 0;padding:12px;background:var(--paper);border:1px solid var(--line);border-radius:14px}route-stop .route-booked{grid-column:2/4}.route-stop .x{grid-column:4;grid-row:1}
 .route-stop input,.route-stop select{padding:9px 10px}.place-wrap{position:relative;min-width:0}.place-suggestions{position:absolute;z-index:1000;top:100%;left:0;right:0;background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px #14233b22;max-height:220px;overflow:auto}.place-suggestions button{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:9px 10px;font-size:.88rem}.route-stop .stop-place,.route-stop .stop-mode{min-width:0}.weather-grid{gap:6px;margin-top:8px}.weather-day{padding:8px 4px}.weather-day .temp{font-size:.98rem;margin:3px 0}.weather-day small{font-size:.72rem}.date-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}.date-pair>div{min-width:0}.date-pair input{border-radius:13px;min-height:48px;padding:10px 12px;box-shadow:0 2px 8px #14233b0a}.date-pair label{font-weight:600;margin:0 0 6px}.item{gap:7px;padding:8px 0}.item-icon{width:25px;font-size:1.08rem}.item input[type=checkbox]{width:21px;height:21px}
 .drag-handle{border:0;background:transparent;color:var(--mute);font-size:1.2rem;padding:4px 0;cursor:grab;touch-action:none}.drag-handle:active{cursor:grabbing}.route-stop.dragging{opacity:.45}.route-stop.drag-over{outline:2px dashed var(--blue);outline-offset:2px}.route-stop .x{font-size:1.2rem}.route-booked{display:flex;align-items:center;gap:5px;white-space:nowrap;font-size:.78rem;color:var(--mute)}.route-booked input{width:16px;height:16px;accent-color:var(--ok)}
-@media(max-width:520px){main{padding:14px 12px 48px}.route-stop{grid-template-columns:24px minmax(0,1fr) minmax(100px,.72fr) 30px;gap:6px;padding:9px}.stop-stay{grid-column:1/3}.route-stop .route-booked{grid-column:2/4}.route-stop .x{grid-column:4;grid-row:1}.date-pair{gap:10px}.date-pair input{font-size:16px}.card{padding:12px;border-radius:15px}.weather-day{padding:7px 3px}.weather-day .temp{font-size:.9rem}}
+@media(max-width:520px){main{padding:14px 12px 48px}.route-stop{grid-template-columns:24px minmax(0,1fr) minmax(100px,.72fr) 30px;gap:6px;padding:9px}route-stop .route-booked{grid-column:2/4}.route-stop .x{grid-column:4;grid-row:1}.date-pair{gap:10px}.date-pair input{font-size:16px}.card{padding:12px;border-radius:15px}.weather-day{padding:7px 3px}.weather-day .temp{font-size:.9rem}}
 .route-line{display:flex;align-items:center;gap:8px;color:var(--mute);font-size:.88rem;padding:3px 0}
 
 .menu-wrap{position:relative}.planner-section{margin:12px 0}.planner-heading{cursor:pointer;list-style:none;font-size:1.2rem;font-weight:700;padding:12px 2px;display:flex;align-items:center;gap:8px}.planner-heading::-webkit-details-marker{display:none}.planner-heading:after{content:"▾";margin-left:auto;color:var(--mute);transition:transform .15s}.planner-section:not([open])>.planner-heading:after{transform:rotate(-90deg)}.planner-section>.card{margin-top:4px}.menu-panel[hidden]{display:none!important}.menu-panel{position:absolute;right:0;top:calc(100% + 6px);z-index:30;min-width:190px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:0 10px 28px #14233b24}.menu-panel button{display:block;width:100%;text-align:left;padding:10px;border:0;border-radius:8px;background:transparent;color:var(--ink)}.menu-panel button:hover{background:var(--paper)}.menu-panel button.danger{color:var(--red)}.emoji-picker{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.emoji-picker button{border:1px solid var(--line);background:var(--paper);border-radius:9px;padding:7px;font-size:1.2rem}.emoji-picker button[aria-pressed=true]{outline:2px solid var(--blue);background:var(--card)}
@@ -153,8 +153,7 @@ function pct(t){return t.items.length?Math.round(t.items.filter(i=>i.d).length/t
 function home(){
  const a=$("app"),F=S.form;
  a.innerHTML=`<h1>Packing lists</h1><p class="sub">One list for every trip.</p>
- ${S.trips.length?S.trips.map(t=>`<button class="trip" data-open="${t.id}"><b>${em(t.type)} ${esc(t.name)}</b><div style="color:var(--mute)">${t.days} days · ${t.items.filter(i=>i.d).length} of ${t.items.length} packed${t.sd?" · "+cdTxt(t):""}</div><div class="bar"><i style="width:${pct(t)}%"></i></div></button>`).join(""):`<div class="empty">No trips yet. Plan your first one below.</div>`}
- <div class="route-tools" style="margin:12px 0"><button class="btn ghost" id="backup-export">⬇ Backup trips</button><button class="btn ghost" id="backup-import">⬆ Restore backup</button><input id="backup-file" type="file" accept="application/json,.json" hidden></div>
+ ${S.trips.length?S.trips.map(t=>`<div class="trip"><button type="button" class="trip-open" data-open="${t.id}" style="width:100%;text-align:left;background:none;border:0;color:inherit;padding:0"><b>${em(t.type)} ${esc(t.name)}</b><div style="color:var(--mute)">${t.days} days · ${t.items.filter(i=>i.d).length} of ${t.items.length} packed${t.sd?" · "+cdTxt(t):""}</div><div class="bar"><i style="width:${pct(t)}%"></i></div></button><div class="route-tools" style="margin-top:8px"><button type="button" class="btn ghost" data-backup-trip="${t.id}">⬇ Backup this trip</button></div></div>`).join(""):`<div class="empty">No trips yet. Plan your first one below.</div>`}
  <div class="route-tools" style="margin:12px 0"><button class="btn ghost" id="backup-export">⬇ Backup trips</button><button class="btn ghost" id="backup-import">⬆ Restore backup</button><input id="backup-file" type="file" accept="application/json,.json" hidden></div>
  <h2>New trip</h2>
  <div class="card">
@@ -168,8 +167,34 @@ function home(){
   <p style="color:var(--mute);font-size:.9rem;margin:12px 0">Clothing quantities adjust to the trip length. Items that appear in several types are listed once.</p>
   <button class="btn" id="create">Create list</button>
  </div>`;
- const exp=$("backup-export");if(exp)exp.onclick=()=>{const blob=new Blob([JSON.stringify({version:1,trips:S.trips,customTypes:C},null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="packing-list-backup.json";a.click();URL.revokeObjectURL(url)};
- const imp=$("backup-import"),file=$("backup-file");if(imp)imp.onclick=()=>file.click();if(file)file.onchange=async()=>{const f=file.files?.[0];if(!f)return;try{const data=JSON.parse(await f.text());if(!Array.isArray(data.trips))throw new Error("Invalid backup");if(confirm("Restore backup? This replaces the trips currently saved in this browser.")){S.trips=data.trips;C=data.customTypes||C;save();saveC();home()}}catch(e){alert("Could not read this backup file.")}};
+ const downloadJSON=(data,filename)=>{
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ };
+ const exp=$("backup-export");
+ if(exp)exp.onclick=()=>downloadJSON({app:"packing-list",version:2,backupType:"all-trips",trips:S.trips,customTypes:C},"packing-list-backup.json");
+ a.querySelectorAll("[data-backup-trip]").forEach(b=>b.onclick=()=>{
+  const t=S.trips.find(x=>x.id===b.dataset.backupTrip);if(!t)return;
+  downloadJSON({app:"packing-list",version:2,backupType:"single-trip",trips:[t],customTypes:C},"packing-list-"+(t.name||"trip").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")+".json");
+ });
+ const imp=$("backup-import"),file=$("backup-file");
+ if(imp)imp.onclick=()=>file.click();
+ if(file)file.onchange=async()=>{
+  const f=file.files?.[0];if(!f)return;
+  try{
+   const data=JSON.parse(await f.text());
+   if(!Array.isArray(data.trips))throw new Error("Invalid backup");
+   if(!confirm("Restore "+data.trips.length+" trip(s)? Existing trips with the same ID will be updated; other trips will be kept."))return;
+   const incoming=data.trips.map(t=>({...t,items:Array.isArray(t.items)?t.items:[]}));
+   const byId=new Map(S.trips.map((t,i)=>[t.id,i]));
+   incoming.forEach(t=>{const i=byId.get(t.id);if(i===undefined)S.trips.unshift(t);else S.trips[i]=t});
+   if(data.customTypes&&typeof data.customTypes==="object")C={...C,...data.customTypes};
+   save();saveC();home();
+   alert("Backup restored. Your existing trips were kept; matching trips were updated.");
+  }catch(e){alert("Could not read this backup file. Please choose a Packing List JSON backup.");}
+  finally{file.value=""}
+ };
  const keep=()=>{F.name=$("n").value;F.dest=$("dd").value;F.sd=$("sd").value;F.ed=$("ed").value};
  $("n").value=F.name||"";$("dd").value=F.dest||"";$("sd").value=F.sd||isoIn(0);$("ed").value=F.ed||isoAdd($("sd").value,4);
  const upd=()=>{if($("ed").value<$("sd").value)$("ed").value=$("sd").value;const n=diff($("sd").value,$("ed").value)+1;$("dn").textContent=n>0?n+(n===1?" day":" days"):""};
@@ -220,7 +245,34 @@ function openTripTypeManager(t){
   </div>`;
   overlay.querySelector("#close-type-manager").onclick=()=>{save();overlay.remove();trip()};
   overlay.querySelectorAll("[data-remove-type]").forEach(b=>b.onclick=()=>{const k=b.dataset.removeType;if(confirm("Delete custom trip type “"+k+"” from this trip? Unchecked exclusive items will be removed; checked and shared items will stay.")){ensureTripMeta(t);syncTripTypes(t,t.types.filter(x=>x!==k));delete C[k];saveC();save();render()}});
-  overlay.querySelectorAll("[data-edit-type]").forEach(b=>b.onclick=()=>{const k=b.dataset.editType,def=all()[k];const next=prompt("Trip type name:",k);if(next===null)return;const name=next.trim();if(!name||name!==k&&all()[name]){alert("Please enter a unique, non-empty name.");return}const emoji=prompt("Choose an emoji:",def.e||"✨");if(emoji===null)return;const current=(def.i||[]).map(([n,c,q])=>(c==="Gear"?"":c+": ")+n+(q?"*"+q:"")).join("\n");const raw=prompt("Edit the items for this trip type (one per line). You can use Category: item*quantity, e.g. Clothes: Hiking socks*1",current);if(raw===null)return;const items=raw.split("\n").map(line=>{let text=line.trim(),cat="Gear",q=0;const m=text.match(/^([A-Za-z ]+):\\s*(.+)$/);if(m){const found=CATS.find(x=>x.toLowerCase()===m[1].trim().toLowerCase());if(found){cat=found;text=m[2]}}const qm=text.match(/\\*(\\d*\\.?\\d+)$/);if(qm){q=parseFloat(qm[1]);text=text.slice(0,qm.index).trim()}return text?[text,cat,q]:null}).filter(Boolean);if(name!==k){C[name]=C[k];delete C[k];if(t.types?.includes(k))syncTripTypes(t,t.types.map(x=>x===k?name:x))}C[name]={e:emoji.trim()||"✨",i:items};if(t.types?.includes(name)){syncTripTypes(t,t.types.filter(x=>x!==name));syncTripTypes(t,[...t.types,name])}saveC();save();render()});
+  overlay.querySelectorAll("[data-edit-type]").forEach(b=>b.onclick=()=>{
+   const oldName=b.dataset.editType,def=all()[oldName]||{e:"✨",i:[]};
+   const proposed=prompt("Trip type name:",oldName);if(proposed===null)return;
+   const name=proposed.trim();
+   if(!name||name!==oldName&&all()[name]){alert("Please enter a unique, non-empty name.");return}
+   const emoji=prompt("Choose an emoji:",def.e||"✨");if(emoji===null)return;
+   const current=(def.i||[]).map(([n,c,q])=>(c&&c!=="Gear"?c+": ":"")+n+(q?"*"+q:"")).join("\n");
+   const raw=prompt("Edit the items for this trip type (one per line). Optional format: Category: item*quantity",current);
+   if(raw===null)return;
+   const items=raw.split("\n").map(line=>{
+    let value=line.trim(),cat="Gear",quantity=0;
+    if(!value)return null;
+    const m=value.match(/^([A-Za-z ]+):\s*(.+)$/);
+    if(m){const found=CATS.find(x=>x.toLowerCase()===m[1].trim().toLowerCase());if(found){cat=found;value=m[2].trim()}}
+    const qm=value.match(/\*(\d*\.?\d+)$/);
+    if(qm){quantity=parseFloat(qm[1]);value=value.slice(0,qm.index).trim()}
+    return value?[value,cat,quantity]:null;
+   }).filter(Boolean);
+   const included=(t.types||[]).includes(oldName);
+   if(name!==oldName){C[name]=C[oldName];delete C[oldName];if(included)t.types=t.types.map(x=>x===oldName?name:x)}
+   C[name]={e:emoji.trim()||"✨",i:items};
+   if(included){
+    const before=t.types.filter(x=>x!==name);
+    syncTripTypes(t,before);
+    syncTripTypes(t,[...before,name]);
+   }
+   saveC();save();render();
+  });
   overlay.querySelector("#add-trip-type").onclick=()=>{const name=overlay.querySelector("#new-trip-type-name").value.trim(),emoji=overlay.querySelector("#new-trip-type-emoji").value.trim()||"✨";if(!name){overlay.querySelector("#type-manager-message").textContent="Please enter a name.";return}if(all()[name]){overlay.querySelector("#type-manager-message").textContent="This type already exists.";return}C[name]={e:emoji,i:[]};saveC();syncTripTypes(t,[...(t.types||[]),name]);save();render()};
  };
  render();document.body.appendChild(overlay);
@@ -328,14 +380,13 @@ function wxCard(t){
  <details class="planner-section" open><summary class="planner-heading">🗺️ Journey planner</summary><div class="card"><p class="wx" style="margin-top:0">Add your starting point and destinations in order, and choose the transport for each leg.</p><div id="route-editor"></div><div class="route-tools"><button class="btn ghost" type="button" id="addstop">＋ Add destination</button><button class="btn" type="button" id="saveroute">Save journey & show map</button></div><div id="route-msg" class="wx" aria-live="polite"></div><div id="map"></div></div></details>`;
 }
 function routeStopHTML(s,i){
- const modes=[["home","🏠 Home"],["plane","✈️ Airplane"],["train","🚆 Train"],["bus","🚌 Bus"],["car","🚗 Car"],["ship","🚢 Ship"],["walk","🚶 Walk"]];
+ const modes=[["home","🏠 Home"],["plane","✈️ Airplane"],["train","🚆 Train"],["bus","🚌 Bus"],["car","🚗 Car"],["ship","🚢 Ship"]];
  const first=i===0;
  return `<div class="route-stop" data-stop="${i}" data-index="${i}">
  <button type="button" class="drag-handle" draggable="true" title="Drag to reorder" aria-label="Drag to reorder stop">⠿</button>
  <div class="place-wrap"><input aria-label="${first?"Starting point":"Destination"} ${i+1}" class="stop-place" maxlength="120" placeholder="${first?"Choose starting point (city, airport or place)":"Search city, airport or place"}" value="${esc(s.place||"")}" autocomplete="off"><div class="place-suggestions" hidden></div></div>
- <select class="stop-mode" aria-label="Transport from ${first?"this starting point":"stop "+i} to the next stop">${modes.filter(([v])=>v!=="home").map(([v,l])=>`<option value="${v}" ${((s.mode||(i===0?"plane":"plane"))===v)?"selected":""}>${l}</option>`).join("")}</select>
+ <select class="stop-mode" aria-label="Transport from ${first?"this starting point":"stop "+i} to the next stop">${modes.map(([v,l])=>`<option value="${v}" ${((s.mode||(i===0?"plane":"plane"))===v)?"selected":""}>${l}</option>`).join("")}</select>
  <label class="route-booked"><input type="checkbox" class="stop-booked" ${s.booked?"checked":""}> ${LANG==="de"?"Ticket gebucht":LANG==="zh"?"车票已预订":"Ticket booked"}</label>
- <div class="stop-stay"><input type="date" class="stop-date" aria-label="Arrival date" value="${esc(s.date||"")}"><input type="text" class="stop-note" aria-label="Stay or accommodation note" placeholder="Hotel / overnight stay / note" value="${esc(s.note||"")}"></div>
  <button type="button" class="x" data-removestop="${i}" aria-label="Remove stop">×</button>
  </div>`;
 }
@@ -374,8 +425,6 @@ function bindWx(t){
   });
   editor.querySelectorAll(".stop-mode").forEach((el,i)=>el.onchange=()=>{route[i].mode=el.value});
   editor.querySelectorAll(".stop-booked").forEach((el,i)=>el.onchange=()=>{route[i].booked=el.checked;save()});
-  editor.querySelectorAll(".stop-date").forEach((el,i)=>el.onchange=()=>{route[i].date=el.value;save()});
-  editor.querySelectorAll(".stop-note").forEach((el,i)=>el.onchange=()=>{route[i].note=el.value;save()});
 
   let draggedIndex=null;
   editor.querySelectorAll(".drag-handle[draggable=true]").forEach(handle=>{
@@ -410,7 +459,7 @@ function bindWx(t){
  };
  if(t.route&&t.route.length)drawRoute(t);
 }
-const MODEICON={home:"🧳",plane:"✈️",train:"🚆",bus:"🚌",car:"🚗",ship:"🚢",walk:"🚶"};
+const MODEICON={home:"🏠",plane:"✈️",train:"🚆",bus:"🚌",car:"🚗",ship:"🚢"};
 function countryFlag(code){
  const c=String(code||"").toUpperCase();
  return /^[A-Z]{2}$/.test(c)?String.fromCodePoint(...[...c].map(x=>127397+x.charCodeAt(0))):"📍";
@@ -479,7 +528,7 @@ async function drawRoute(t){
   }
   if(points.length===1)map.setView([points[0].lat,points[0].lon],10);else map.fitBounds(bounds,{padding:[28,28],maxZoom:7});
   setTimeout(()=>map.invalidateSize(),100);
-  if(msg)msg.textContent=directCount?`Map ready. Road and walking legs follow available routes; ${directCount} leg(s) use direct connections because train, air or sea network routing is not available here.`:"Map ready. Road and walking legs follow available routes.";
+  if(msg)msg.textContent=directCount?`Map ready. Road legs follow available routes; ${directCount} leg(s) use direct connections because home, train, air or sea network routing is not available here.`:"Map ready. Road and walking legs follow available routes.";
  }catch(e){if(msg)msg.textContent=e.message+" — check the place name or internet connection."}
 }
 function diff(a,b){return Math.round((new Date(b+"T00:00:00")-new Date(a+"T00:00:00"))/864e5)}
