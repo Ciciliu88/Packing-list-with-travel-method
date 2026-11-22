@@ -154,7 +154,6 @@ function home(){
  const a=$("app"),F=S.form;
  a.innerHTML=`<h1>Packing lists</h1><p class="sub">One list for every trip.</p>
  ${S.trips.length?S.trips.map(t=>`<div class="trip"><button type="button" class="trip-open" data-open="${t.id}" style="width:100%;text-align:left;background:none;border:0;color:inherit;padding:0"><b>${em(t.type)} ${esc(t.name)}</b><div style="color:var(--mute)">${t.days} days · ${t.items.filter(i=>i.d).length} of ${t.items.length} packed${t.sd?" · "+cdTxt(t):""}</div><div class="bar"><i style="width:${pct(t)}%"></i></div></button><div class="route-tools" style="margin-top:8px"><button type="button" class="btn ghost" data-backup-trip="${t.id}">⬇ Backup this trip</button></div></div>`).join(""):`<div class="empty">No trips yet. Plan your first one below.</div>`}
- <div class="route-tools" style="margin:12px 0"><button class="btn ghost" id="backup-export">⬇ Backup trips</button><button class="btn ghost" id="backup-import">⬆ Restore backup</button><input id="backup-file" type="file" accept="application/json,.json" hidden></div>
  <h2>New trip</h2>
  <div class="card">
   <label for="n">Trip name</label><input id="n" placeholder="Lisbon in May" maxlength="40">
@@ -165,15 +164,13 @@ function home(){
   <div class="types">${Object.keys(all()).map(k=>`<span class="row" style="gap:0"><button type="button" data-type="${esc(k)}" aria-pressed="${F.types.includes(k)}">${em(k)} ${esc(k)}</button>${C[k]?`<button type="button" class="x" data-deltype="${esc(k)}" aria-label="${T[k]?"Restore original":"Delete"} type ${esc(k)}">${T[k]?"↺":"×"}</button>`:""}</span>`).join("")}</div>
   ${typeEd()}
   <p style="color:var(--mute);font-size:.9rem;margin:12px 0">Clothing quantities adjust to the trip length. Items that appear in several types are listed once.</p>
-  <button class="btn" id="create">Create list</button>
+  <div class="row" style="margin-top:12px;align-items:center"><button class="btn" id="create">Create list</button><button class="btn ghost" id="backup-import">⬆ Restore backup</button><input id="backup-file" type="file" accept="application/json,.json" hidden></div>
  </div>`;
  const downloadJSON=(data,filename)=>{
   const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
   const url=URL.createObjectURL(blob),a=document.createElement("a");
   a.href=url;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
  };
- const exp=$("backup-export");
- if(exp)exp.onclick=()=>downloadJSON({app:"packing-list",version:2,backupType:"all-trips",trips:S.trips,customTypes:C},"packing-list-backup.json");
  a.querySelectorAll("[data-backup-trip]").forEach(b=>b.onclick=()=>{
   const t=S.trips.find(x=>x.id===b.dataset.backupTrip);if(!t)return;
   downloadJSON({app:"packing-list",version:2,backupType:"single-trip",trips:[t],customTypes:C},"packing-list-"+(t.name||"trip").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")+".json");
@@ -281,7 +278,7 @@ function trip(){
  const t=S.trips.find(x=>x.id===S.cur);if(!t)return home();
  const a=$("app");
  const groups=CATS.map(c=>[c,t.items.filter(i=>i.c===c)]).filter(g=>g[1].length);
- a.innerHTML=`<div class="top"><button class="btn ghost" id="back">Back</button><div class="menu-wrap"><button class="btn ghost" id="tripmenu" aria-expanded="false">Trip options ▾</button><div class="menu-panel" id="tripmenu-panel" hidden><button type="button" id="rename">✎ Rename trip</button><button type="button" id="edittypes">＋ / − Manage trip types</button><button type="button" class="danger" id="del">Delete trip</button></div></div></div>
+ a.innerHTML=`<div class="top"><button class="btn ghost" id="back">Back</button><div class="menu-wrap"><button class="btn ghost" id="tripmenu" aria-expanded="false">Trip options ▾</button><div class="menu-panel" id="tripmenu-panel" hidden><button type="button" id="rename">✎ Rename trip</button><button type="button" class="danger" id="del">Delete trip</button></div></div></div>
  <h1>${em(t.type)} ${esc(t.name)}</h1>
  <p class="sub">${t.days} days · <span id="pc">${pct(t)}</span>% packed</p>
  <div class="card" style="margin:10px 0"><div class="row" style="justify-content:space-between"><b>Packing progress</b><span><b>${t.items.filter(i=>i.d).length}</b> / ${t.items.length} packed</span></div><div class="bar" style="height:12px;margin-top:8px"><i style="width:${pct(t)}%"></i></div><div class="wx" style="margin-top:7px">${t.items.filter(i=>!i.d).length} items remaining · ${new Set(t.items.map(i=>i.c)).size} categories</div></div>
@@ -386,7 +383,7 @@ function routeStopHTML(s,i){
  <button type="button" class="drag-handle" draggable="true" title="Drag to reorder" aria-label="Drag to reorder stop">⠿</button>
  <div class="place-wrap"><input aria-label="${first?"Starting point":"Destination"} ${i+1}" class="stop-place" maxlength="120" placeholder="${first?"Choose starting point (city, airport or place)":"Search city, airport or place"}" value="${esc(s.place||"")}" autocomplete="off"><div class="place-suggestions" hidden></div></div>
  <select class="stop-mode" aria-label="Transport from ${first?"this starting point":"stop "+i} to the next stop">${modes.map(([v,l])=>`<option value="${v}" ${((s.mode||(i===0?"plane":"plane"))===v)?"selected":""}>${l}</option>`).join("")}</select>
- <label class="route-booked"><input type="checkbox" class="stop-booked" ${s.booked?"checked":""}> ${LANG==="de"?"Ticket gebucht":LANG==="zh"?"车票已预订":"Ticket booked"}</label>
+ <label class="route-booked"><input type="checkbox" class="stop-booked" ${s.booked?"checked":""}><span class="ticket-status">${s.booked?(LANG==="de"?"Ticket gebucht":LANG==="zh"?"车票已预订":"Ticket booked"):(LANG==="de"?"Ticket buchen":LANG==="zh"?"预订车票":"Ticket booking")}</span></label>
  <button type="button" class="x" data-removestop="${i}" aria-label="Remove stop">×</button>
  </div>`;
 }
@@ -424,7 +421,12 @@ function bindWx(t){
    el.onblur=()=>setTimeout(()=>{box.hidden=true},180);
   });
   editor.querySelectorAll(".stop-mode").forEach((el,i)=>el.onchange=()=>{route[i].mode=el.value});
-  editor.querySelectorAll(".stop-booked").forEach((el,i)=>el.onchange=()=>{route[i].booked=el.checked;save()});
+  editor.querySelectorAll(".stop-booked").forEach((el,i)=>el.onchange=()=>{
+   route[i].booked=el.checked;
+   const label=el.closest(".route-booked")?.querySelector(".ticket-status");
+   if(label)label.textContent=el.checked?(LANG==="de"?"Ticket gebucht":LANG==="zh"?"车票已预订":"Ticket booked"):(LANG==="de"?"Ticket buchen":LANG==="zh"?"预订车票":"Ticket booking");
+   save();
+  });
 
   let draggedIndex=null;
   editor.querySelectorAll(".drag-handle[draggable=true]").forEach(handle=>{
@@ -498,7 +500,7 @@ async function drawRoute(t){
  const msg=$("route-msg");if(msg)msg.textContent="Finding locations and calculating available routes…";
  try{
   const points=[];
-  for(const stop of route){const p=await geocodePlace(stop.place,stop.geo);points.push({...p,place:stop.place,mode:stop.mode})}
+  for(const stop of route){const p=await geocodePlace(stop.place,stop.geo);points.push({...p,place:stop.place,mode:stop.mode,booked:!!stop.booked})}
   t.routeGeo=points;save();mapEl.style.display="block";
   if(t.leafletMap){t.leafletMap.remove();t.leafletMap=null}
   const map=L.map("map",{scrollWheelZoom:false});
@@ -513,16 +515,17 @@ async function drawRoute(t){
   for(let i=0;i<points.length;i++){
    const p=points[i];
    const icon=L.divIcon({html:`<div style="font-size:21px;background:#fff;border:2px solid #fff;border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px #24344a66">${i===0?"🏠":"📍"}</div>`,className:"",iconSize:[38,38],iconAnchor:[19,19]});
-   L.marker([p.lat,p.lon],{icon}).addTo(map).bindPopup(`<b>${esc(p.place)}</b>`);
+   L.marker([p.lat,p.lon],{icon}).addTo(map).bindPopup(`<b>${esc(p.place)}</b>${p.booked?`<br>✓ ${LANG==="de"?"Ticket gebucht":LANG==="zh"?"车票已预订":"Ticket booked"}`:""}`);
    bounds.push([p.lat,p.lon]);
    if(i>0){
     const leg=await getLegGeometry(points[i-1],p,points[i-1].mode);
     if(leg.kind==="direct")directCount++;
     const style=leg.kind==="direct"?{color:"#d97706",weight:3,dashArray:"7 8",opacity:.9}:{color:leg.kind==="foot"?"#16845b":"#2563eb",weight:5,opacity:.88,lineCap:"round",lineJoin:"round"};
-    L.polyline(leg.coords,style).addTo(map).bindPopup(`${MODEICON[points[i-1].mode]||"📍"} ${esc(points[i-1].mode)}: ${esc(points[i-1].place)} → ${esc(p.place)}<br>${leg.kind==="direct"?"Direct illustrative connection":"Routed path"}`);
+    L.polyline(leg.coords,style).addTo(map).bindPopup(`${MODEICON[points[i-1].mode]||"📍"} ${esc(points[i-1].mode)}: ${esc(points[i-1].place)} → ${esc(p.place)}<br>${leg.kind==="direct"?"Direct illustrative connection":"Routed path"}${points[i-1].booked?"<br>✓ Ticket booked":""}`);
     const midIndex=Math.floor((leg.coords.length-1)/2),mid=leg.coords[midIndex];
     const transportIcon=L.divIcon({html:`<div style="font-size:20px;background:#fff;border:1px solid #d8dee8;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 7px #24344a55">${MODEICON[points[i-1].mode]||"📍"}</div>`,className:"",iconSize:[32,32],iconAnchor:[16,16]});
-    L.marker(mid,{icon:transportIcon,interactive:true}).addTo(map).bindPopup(`${MODEICON[points[i-1].mode]||"📍"} ${esc(points[i-1].mode)}: ${esc(points[i-1].place)} → ${esc(p.place)}`);
+    const ticketStatus=points[i-1].booked?`<br><b>✓ ${LANG==="de"?"Ticket gebucht":LANG==="zh"?"车票已预订":"Ticket booked"}</b>`:"";
+    L.marker(mid,{icon:transportIcon,interactive:true}).addTo(map).bindPopup(`${MODEICON[points[i-1].mode]||"📍"} ${esc(points[i-1].mode)}: ${esc(points[i-1].place)} → ${esc(p.place)}${ticketStatus}`);
     leg.coords.forEach(c=>bounds.push(c));
    }
   }
