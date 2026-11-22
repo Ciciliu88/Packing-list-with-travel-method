@@ -64,7 +64,7 @@ textarea{font:inherit;color:inherit;background:var(--paper);border:1.5px solid v
 @media(max-width:520px){main{padding:14px 12px 48px}.route-stop{grid-template-columns:24px minmax(0,1fr) minmax(100px,.72fr) 30px;gap:6px;padding:9px}.stop-stay{grid-column:1/3}.route-stop .route-booked{grid-column:2/4}.route-stop .x{grid-column:4;grid-row:1}.date-pair{gap:10px}.date-pair input{font-size:16px}.card{padding:12px;border-radius:15px}.weather-day{padding:7px 3px}.weather-day .temp{font-size:.9rem}}
 .route-line{display:flex;align-items:center;gap:8px;color:var(--mute);font-size:.88rem;padding:3px 0}
 
-.menu-wrap{position:relative}.menu-panel{position:absolute;right:0;top:calc(100% + 6px);z-index:30;min-width:190px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:0 10px 28px #14233b24}.menu-panel button{display:block;width:100%;text-align:left;padding:10px;border:0;border-radius:8px;background:transparent;color:var(--ink)}.menu-panel button:hover{background:var(--paper)}.menu-panel button.danger{color:var(--red)}.emoji-picker{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.emoji-picker button{border:1px solid var(--line);background:var(--paper);border-radius:9px;padding:7px;font-size:1.2rem}.emoji-picker button[aria-pressed=true]{outline:2px solid var(--blue);background:var(--card)}
+.menu-wrap{position:relative}.menu-panel[hidden]{display:none!important}.menu-panel{position:absolute;right:0;top:calc(100% + 6px);z-index:30;min-width:190px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:0 10px 28px #14233b24}.menu-panel button{display:block;width:100%;text-align:left;padding:10px;border:0;border-radius:8px;background:transparent;color:var(--ink)}.menu-panel button:hover{background:var(--paper)}.menu-panel button.danger{color:var(--red)}.emoji-picker{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.emoji-picker button{border:1px solid var(--line);background:var(--paper);border-radius:9px;padding:7px;font-size:1.2rem}.emoji-picker button[aria-pressed=true]{outline:2px solid var(--blue);background:var(--card)}
 .route-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .item-icon{width:28px;flex:none;text-align:center;font-size:1.15rem}
 .item .item-text{flex:1;min-width:0}.category-group{margin:10px 0}.category-group summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:10px 2px;color:var(--blue);font-weight:700}.category-group summary::-webkit-details-marker{display:none}.category-group summary:after{content:'▾';margin-left:auto}.category-group:not([open]) summary:after{content:'▸'}
@@ -166,7 +166,7 @@ function home(){
   const days=Math.min(60,Math.max(1,diff($("sd").value,$("ed").value)+1||5));
   const t=build(name,days,F.types);t.dest=$("dd").value.trim();t.sd=$("sd").value;t.ed=$("ed").value;
   if(t.sd&&t.ed&&t.ed<t.sd)t.ed=t.sd;
-  t.route=t.dest?[{place:"",mode:"home",booked:false},{place:t.dest,mode:"plane",booked:false}]:[{place:"",mode:"home",booked:false}];
+  t.route=t.dest?[{place:"",mode:"plane",booked:false},{place:t.dest,mode:"plane",booked:false}]:[{place:"",mode:"plane",booked:false}];
   S.trips.unshift(t);save();S.cur=t.id;S.form={types:F.types};trip();
  };
 }
@@ -188,8 +188,36 @@ function trip(){
  <div class="card"><div class="row"><select id="mt" aria-label="Trip type">${Object.keys(all()).map(k=>`<option value="${esc(k)}">${esc(k)}</option>`).join("")}</select><button class="btn" id="mg" style="flex:none">Add</button></div><p class="wx" style="margin:8px 0 0">Items already on your list are skipped.</p></div>
  <div class="route-tools"><button class="btn ghost" id="reset">Uncheck everything</button><button class="btn" id="pdf">📄 Export PDF</button></div>`;
  $("back").onclick=()=>{S.cur=null;home()};bindWx(t);
- $("rename").onclick=()=>{const next=prompt("Enter a new name for this packing list:",t.name||"");if(next===null)return;const clean=next.trim();if(!clean){alert("The name cannot be empty.");return}t.name=clean.slice(0,60);save();trip()};
- $("del").onclick=()=>{if(confirm("Delete “"+t.name+"”?")){S.trips=S.trips.filter(x=>x.id!==t.id);save();S.cur=null;home()}};
+ const tripMenu=$("tripmenu"),tripPanel=$("tripmenu-panel");
+ const closeTripMenu=()=>{tripPanel.hidden=true;tripMenu.setAttribute("aria-expanded","false")};
+ tripMenu.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();const opening=tripPanel.hidden;tripPanel.hidden=!opening;tripMenu.setAttribute("aria-expanded",String(opening))});
+ tripPanel.addEventListener("click",e=>{
+  const action=e.target.closest("button");
+  if(!action)return;
+  e.preventDefault();e.stopPropagation();
+  if(action.id==="rename"){
+   closeTripMenu();
+   const next=prompt("Enter a new name for this packing list:",t.name||"");
+   if(next===null)return;
+   const clean=next.trim();
+   if(!clean){alert("The name cannot be empty.");return}
+   t.name=clean.slice(0,60);save();trip();
+  }else if(action.id==="edittypes"){
+   closeTripMenu();
+   S.cur=null;
+   S.form={...S.form,types:[...(S.form?.types||[])],edit:""};
+   home();
+   const heading=[...document.querySelectorAll("#app h2")].find(h=>h.textContent.includes("New trip"));
+   const typeLabel=[...document.querySelectorAll("#app label")].find(l=>l.textContent.toLowerCase().includes("trip types"));
+   (typeLabel||heading)?.scrollIntoView({behavior:"smooth",block:"center"});
+  }else if(action.id==="del"){
+   closeTripMenu();
+   if(confirm("Delete “"+t.name+"”?")){S.trips=S.trips.filter(x=>x.id!==t.id);save();S.cur=null;home()}
+  }
+ });
+ document.addEventListener("click",e=>{
+  if(!tripPanel.hidden&&!tripPanel.contains(e.target)&&!tripMenu.contains(e.target))closeTripMenu();
+ });
  a.querySelectorAll("[data-id]").forEach(c=>c.onchange=()=>{
   const it=t.items.find(i=>i.id===c.dataset.id);it.d=c.checked;save();
   c.closest(".item").classList.toggle("done",it.d);
@@ -252,10 +280,10 @@ function routeStopHTML(s,i){
  const modes=[["home","🏠 Home"],["plane","✈️ Airplane"],["train","🚆 Train"],["bus","🚌 Bus"],["car","🚗 Car"],["ship","🚢 Ship"],["walk","🚶 Walk"]];
  const first=i===0;
  return `<div class="route-stop" data-stop="${i}" data-index="${i}">
- <button type="button" class="drag-handle" ${first?'disabled title="Starting point"':'draggable="true" title="Drag to reorder" aria-label="Drag to reorder stop"'}>${first?"⌂":"⠿"}</button>
- <div class="place-wrap"><input aria-label="${first?"Starting point":"Destination"} ${i+1}" class="stop-place" maxlength="120" placeholder="${first?"Starting point (e.g. Home)":"Search city, airport or place"}" value="${esc(s.place||"")}" autocomplete="off"><div class="place-suggestions" hidden></div></div>
- <select class="stop-mode" aria-label="Transport to ${first?"starting point":"stop "+(i+1)}" ${first?"disabled":""}>${modes.map(([v,l])=>`<option value="${v}" ${((s.mode||(first?"home":"plane"))===v)?"selected":""}>${l}</option>`).join("")}</select>
- <label class="route-booked"><input type="checkbox" class="stop-booked" ${s.booked?"checked":""} ${first?"disabled":""}> ${LANG==="de"?"Ticket gebucht":LANG==="zh"?"车票已预订":"Ticket booked"}</label>
+ <button type="button" class="drag-handle" draggable="true" title="Drag to reorder" aria-label="Drag to reorder stop">⠿</button>
+ <div class="place-wrap"><input aria-label="${first?"Starting point":"Destination"} ${i+1}" class="stop-place" maxlength="120" placeholder="${first?"Choose starting point (city, airport or place)":"Search city, airport or place"}" value="${esc(s.place||"")}" autocomplete="off"><div class="place-suggestions" hidden></div></div>
+ <select class="stop-mode" aria-label="Transport from ${first?"this starting point":"stop "+i} to the next stop">${modes.filter(([v])=>v!=="home").map(([v,l])=>`<option value="${v}" ${((s.mode||(i===0?"plane":"plane"))===v)?"selected":""}>${l}</option>`).join("")}</select>
+ <label class="route-booked"><input type="checkbox" class="stop-booked" ${s.booked?"checked":""}> ${LANG==="de"?"Ticket gebucht":LANG==="zh"?"车票已预订":"Ticket booked"}</label>
  <button type="button" class="x" data-removestop="${i}" aria-label="Remove stop">×</button>
  </div>`;
 }
@@ -264,8 +292,7 @@ function bindWx(t){
  if($("edc"))$("edc").onchange=()=>{const b=$("edc").value;if(!b||!t.sd)return;t.ed=b<t.sd?t.sd:b;t.days=Math.max(1,Math.min(60,Math.round((new Date(t.ed+"T00:00:00")-new Date(t.sd+"T00:00:00"))/864e5)+1));save();trip()};
  bindCities(t);loadWx(t);
  let route=(t.route&&t.route.length)?t.route.map(s=>({...s,geo:s.geo||null})):[];
- if(route.length<2)route=[{place:route[0]?.place||"",mode:"home",booked:false},{place:t.dest||route[0]?.place||"",mode:"plane",booked:false}];
- if(route[0])route[0].mode="home";
+ if(route.length<2)route=[{place:route[0]?.place||"",mode:"plane",booked:false},{place:t.dest||"",mode:"plane",booked:false}];
  const editor=$("route-editor");
  const redraw=()=>{editor.innerHTML=route.map(routeStopHTML).join("");bindRouteRows()};
  const bindRouteRows=()=>{
@@ -382,14 +409,17 @@ async function drawRoute(t){
   const bounds=[];let directCount=0;
   for(let i=0;i<points.length;i++){
    const p=points[i];
-   const icon=L.divIcon({html:`<div style="font-size:24px;background:#fff;border:2px solid #fff;border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px #24344a66">${i===0?"🏠":countryFlag(p.country_code)}</div>`,className:"",iconSize:[38,38],iconAnchor:[19,19]});
-   L.marker([p.lat,p.lon],{icon}).addTo(map).bindPopup(`<b>${esc(p.place)}</b><br>${i===0?"🏠 Home":countryFlag(p.country_code)+" "+esc(p.place)}`);
+   const icon=L.divIcon({html:`<div style="font-size:21px;background:#fff;border:2px solid #fff;border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px #24344a66">📍</div>`,className:"",iconSize:[38,38],iconAnchor:[19,19]});
+   L.marker([p.lat,p.lon],{icon}).addTo(map).bindPopup(`<b>${esc(p.place)}</b>`);
    bounds.push([p.lat,p.lon]);
    if(i>0){
-    const leg=await getLegGeometry(points[i-1],p,p.mode);
+    const leg=await getLegGeometry(points[i-1],p,points[i-1].mode);
     if(leg.kind==="direct")directCount++;
     const style=leg.kind==="direct"?{color:"#d97706",weight:3,dashArray:"7 8",opacity:.9}:{color:leg.kind==="foot"?"#16845b":"#2563eb",weight:5,opacity:.88,lineCap:"round",lineJoin:"round"};
-    L.polyline(leg.coords,style).addTo(map).bindPopup(`${MODEICON[p.mode]||"📍"} ${esc(p.mode)}: ${esc(points[i-1].place)} → ${esc(p.place)}<br>${leg.kind==="direct"?"Direct illustrative connection":"Routed path"}`);
+    L.polyline(leg.coords,style).addTo(map).bindPopup(`${MODEICON[points[i-1].mode]||"📍"} ${esc(points[i-1].mode)}: ${esc(points[i-1].place)} → ${esc(p.place)}<br>${leg.kind==="direct"?"Direct illustrative connection":"Routed path"}`);
+    const midIndex=Math.floor((leg.coords.length-1)/2),mid=leg.coords[midIndex];
+    const transportIcon=L.divIcon({html:`<div style="font-size:20px;background:#fff;border:1px solid #d8dee8;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 7px #24344a55">${MODEICON[points[i-1].mode]||"📍"}</div>`,className:"",iconSize:[32,32],iconAnchor:[16,16]});
+    L.marker(mid,{icon:transportIcon,interactive:true}).addTo(map).bindPopup(`${MODEICON[points[i-1].mode]||"📍"} ${esc(points[i-1].mode)}: ${esc(points[i-1].place)} → ${esc(p.place)}`);
     leg.coords.forEach(c=>bounds.push(c));
    }
   }
