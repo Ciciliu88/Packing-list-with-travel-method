@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Packing Lists</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Packing">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#14233b">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAC5ElEQVR4nO3cMW4TQRiA0QSlTBnRR6FFVAhBKqDjIpyAA3AMLkKHUiM6coD0nIICCSHBB068nlk279WWZjT+/DurrPf46/MnR/AnD2ZvgPUSB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB+nk1bfT2XtgpUwOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhIJ7M3cCg311cjlzt//HLkcmMcn11czt7DwgZn8auNJbK1r5WJZUxffXGbimMN780a9rCU7cSxnndlPTvZ03biYHEbiWNtH9a17eduNnspezTw2mEbKfxuI5ODQxAHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDm/zRhq3fKLGLubx1mxiGLHc1KZE4csriD8YlM+JtDGXcz/txGx6GMfQw+vaFxKGN/I8/QpSxpXBzGxlKGnaTJQRoUh7GxrDHnaXKQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEHa8kNq/+nZ24+7vOzzhzeH3sk6mRwkcZDEQRIHSRykQVcrN6+fjlnodh693+VVK9380emhFzA5SOIgiYMkDpI4SOIgDbqUPf/0ZcxCt7PbP95WuvnDPwXK5CCJgyQOkjhI4iCJgyQO0r2+wfje3jm8I5ODJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA7SoDjOD/+MontlzHmaHKRxcRgeSxl2kiYHaWgchsf+Rp7h6Mmhj30MPr0JXyv6uJvx53Z8dnE5eMmfbq6vZi39f5n1cZoZxw8S+Yu5U3Z+HKyWS1mSOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEgnD1+8m70HVsrkIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIH0HBvBeNmaK+90AAAAASUVORK5CYII=">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#14233b;--paper:#f3f6fa;--card:#fff;--line:#d5dce8;--red:#d2392f;--blue:#2a5db0;--ok:#2e8b6a;--mute:#5d6b82;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#e8eef9;--paper:#0f1828;--card:#17233a;--line:#2a3a57;--red:#ee6a60;--blue:#7ba6ee;--ok:#5cc7a0;--mute:#9aa9c2}}
+:root[data-theme="dark"]{--ink:#e8eef9;--paper:#0f1828;--card:#17233a;--line:#2a3a57;--red:#ee6a60;--blue:#7ba6ee;--ok:#5cc7a0;--mute:#9aa9c2}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.45 "Bricolage Grotesque",system-ui,sans-serif}
+.stripe{height:10px;background:repeating-linear-gradient(-45deg,var(--red) 0 14px,var(--paper) 14px 24px,var(--blue) 24px 38px,var(--paper) 38px 48px)}
+main{max-width:560px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:2rem;font-weight:800;margin:0 0 4px;letter-spacing:-.02em}
+h2{font-size:1.05rem;font-weight:600;margin:24px 0 8px;color:var(--blue)}
+p.sub{margin:0 0 20px;color:var(--mute)}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.btn{background:var(--ink);color:var(--paper);border:0;border-radius:10px;padding:11px 16px;font-weight:600}
+.btn.ghost{background:none;color:var(--ink);border:1.5px solid var(--line)}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.row{display:flex;gap:8px;align-items:center}
+input,select{background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;min-width:0}
+label{display:block;font-size:.9rem;color:var(--mute);margin:10px 0 4px}
+.types{display:flex;flex-wrap:wrap;gap:8px}
+.types button{background:var(--paper);border:1.5px solid var(--line);border-radius:999px;padding:8px 14px}
+.types button[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.trip{display:block;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px}
+.trip b{font-size:1.1rem}
+.bar{height:8px;background:var(--line);border-radius:8px;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:var(--ok);transition:width .25s}
+.item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.item:last-child{border:0}
+.item input[type=checkbox]{width:24px;height:24px;accent-color:var(--ok);flex:none;padding:0}
+.item span{flex:1}
+.item.done span{text-decoration:line-through;color:var(--mute)}
+.x{background:none;border:0;color:var(--mute);font-size:1.3rem;padding:4px 8px}
+.empty{color:var(--mute);padding:16px 0;text-align:center}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+textarea{font:inherit;color:inherit;background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;resize:vertical}
+.sug{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.sug button{background:var(--paper);border:1.5px solid var(--line);border-radius:999px;padding:6px 12px}
+#map{height:300px;border-radius:10px;margin-top:12px;display:none;z-index:0}
+.wx{margin-top:8px;color:var(--mute)}
+.weather-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
+.weather-day{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 7px;text-align:center}
+.weather-day b{display:block;font-size:.88rem}
+.weather-day .temp{font-size:1.05rem;font-weight:800;margin:5px 0}
+.weather-day small{display:block;color:var(--mute);font-size:.78rem}
+.route-stop{display:grid;grid-template-columns:minmax(0,1fr) 112px auto 36px;gap:7px;align-items:center;margin:8px 0}
+.route-stop input,.route-stop select{padding:8px}
+.route-stop .x{font-size:1.2rem}.route-booked{display:flex;align-items:center;gap:5px;white-space:nowrap;font-size:.78rem;color:var(--mute)}.route-booked input{width:16px;height:16px;accent-color:var(--ok)}
+@media(max-width:520px){.route-stop{grid-template-columns:minmax(0,1fr) 36px}.route-stop .stop-mode{grid-column:1}.route-stop .route-booked{grid-column:1}.route-stop .x{grid-column:2;grid-row:1}}
+.route-line{display:flex;align-items:center;gap:8px;color:var(--mute);font-size:.88rem;padding:3px 0}
+.route-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.item-icon{width:28px;flex:none;text-align:center;font-size:1.15rem}
+.item .item-text{flex:1;min-width:0}.category-group{margin:10px 0}.category-group summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:10px 2px;color:var(--blue);font-weight:700}.category-group summary::-webkit-details-marker{display:none}.category-group summary:after{content:'▾';margin-left:auto}.category-group:not([open]) summary:after{content:'▸'}
+.item .item-text label{overflow-wrap:anywhere}
+.cat-title{display:flex;align-items:center;gap:8px}
+@media print{
+ body{background:#fff!important;color:#111!important}
+ .stripe,#lg,.top button,#add,.route-tools,#reset,.x,.btn,.sug,#map{display:none!important}
+ main{max-width:none;padding:0}
+ .card,.trip{break-inside:avoid;border:1px solid #ccc;background:#fff!important;color:#111!important}
+ .item{break-inside:avoid}
+ input[type=checkbox]{print-color-adjust:exact}
+ .weather-grid{break-inside:avoid}
+}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+</head>
+<body>
+<div class="stripe"></div>
+<div style="max-width:560px;margin:0 auto;padding:10px 16px 0;text-align:right"><button class="btn ghost" id="lg" type="button" style="padding:6px 12px"></button></div>
+<main id="app"></main>
+<script>
+const T={
+ "Hiking":{e:"🥾",i:[["Hiking shoes","Clothes"],["Hiking pants","Clothes"],["Hiking shirts","Clothes",0.5],["Hiking socks","Clothes",0.7],["Underwear","Clothes",1],["Rain jacket","Clothes"],["Hat (sun or hiking)","Clothes"],["Water bottle","Gear"],["First-aid kit","Gear"],["Headlamp","Gear"],["Offline maps","Tech"],["Snacks","Gear"],["Sun cream","Toiletries"]]},
+ "Travel":{e:"🌍",i:[["Travel insurance papers","Documents"],["Driver’s licence","Documents"],["T-shirts","Clothes",0.7],["Casual pants or shorts","Clothes",0.4],["Sweater or pullover","Clothes"],["Jacket or coat","Clothes"],["Pyjamas","Clothes"],["Underwear","Clothes",1],["Socks","Clothes",1],["Comfortable shoes","Clothes"],["Swimsuit or trunks","Clothes"],["Hat (sun or hiking)","Clothes"],["Power adapter","Tech"],["Power bank","Tech"],["Earphones + charger","Tech"],["Sunglasses","Gear"],["Umbrella","Gear"],["Travel locks","Gear"],["Water bottle","Gear"],["Laundry bag","Gear"],["Day bag","Gear"],["Snacks","Gear"],["Shampoo and conditioner","Toiletries"],["Soap or body wash","Toiletries"],["Comb","Toiletries"],["Razor","Toiletries"],["Tissues and wet wipes","Toiletries"],["Dental floss","Toiletries"],["Nail clippers","Toiletries"],["Sun cream","Toiletries"],["Take out the trash","Before leaving"],["Water the plants","Before leaving"],["Switch off appliances","Before leaving"],["Lock doors and windows","Before leaving"]]},
+ "Camping":{e:"⛺",i:[["Campsite booking","Documents"],["T-shirts","Clothes",0.7],["Casual pants or shorts","Clothes",0.4],["Sweater or pullover","Clothes"],["Rain jacket","Clothes"],["Underwear","Clothes",1],["Socks","Clothes",1],["Hiking shoes","Clothes"],["Sandals","Clothes"],["Hat (sun or hiking)","Clothes"],["Tent","Gear"],["Sleeping bag","Gear"],["Sleeping mat","Gear"],["Headlamp","Gear"],["Lighter","Gear"],["Trash bags","Gear"],["Camping stove and fuel","Gear"],["Water bottle","Gear"],["First-aid kit","Gear"],["Quick-dry towel","Gear"],["Cookware","Kitchen"],["Plates and cutlery","Kitchen"],["Cups","Kitchen"],["Kitchen paper","Kitchen"],["Dish soap and sponge","Kitchen"],["Food and snacks","Kitchen"],["Salt and cooking oil","Kitchen"],["Power bank","Tech"],["Sun cream","Toiletries"],["Insect repellent","Toiletries"]]},
+ "Fluglager":{e:"🛩️",i:[["Licences (SPL, BZF, medical)","Documents"],["ICAO chart","Documents"],["Flying shoes","Clothes"],["Flying pants","Clothes"],["Anti-UV jacket","Clothes"],["Sun protection sleeves","Clothes"],["Sun hat","Clothes"],["Flying backpack","Gear"],["Hydration bladder","Gear"],["Water bottle","Gear"],["Adhesive tape","Gear"],["Scissors","Gear"],["Sunglasses","Gear"],["Phone holder (flying)","Tech"],["SD card + card reader","Tech"],["Action camera + batteries + SIM cards + charger","Tech"],["Sun cream","Toiletries"],["Anti-UV lip balm","Toiletries"]]},
+ "Snowboarding":{e:"🏂",i:[["Lift pass","Documents"],["Snowboard jacket","Clothes"],["Snowboard pants","Clothes"],["Thermal layers","Clothes",0.7],["Snowboard socks","Clothes",0.7],["Underwear","Clothes",1],["Gloves","Clothes"],["Beanie","Clothes"],["Neck gaiter","Clothes"],["Board and boots","Gear"],["Helmet","Gear"],["Goggles","Gear"],["Wrist guards","Gear"],["Sun cream","Toiletries"],["Lip balm","Toiletries"]]},
+ "New Zealand":{e:"🥝",i:[["NZeTA (if required)","Documents"],["International driving permit","Documents"],["Travel insurance papers","Documents"],["Hut or campsite bookings","Documents"],["Declare outdoor gear and food on arrival","Documents"],["T-shirts","Clothes",0.6],["Hiking shirts","Clothes",0.5],["Merino base layers","Clothes",0.5],["Casual pants or shorts","Clothes",0.3],["Hiking pants","Clothes"],["Fleece or warm layer","Clothes"],["Rain jacket","Clothes"],["Rain pants","Clothes"],["Warm hat and gloves","Clothes"],["Hat (sun or hiking)","Clothes"],["Hiking shoes","Clothes"],["Sandals","Clothes"],["Swimsuit or trunks","Clothes"],["Underwear","Clothes",1],["Hiking socks","Clothes",1],["Day pack","Gear"],["Dry bag","Gear"],["Water bottle","Gear"],["Headlamp","Gear"],["First-aid kit","Gear"],["Quick-dry towel","Gear"],["Sunglasses","Gear"],["Power adapter (type I)","Tech"],["Power bank","Tech"],["Offline maps","Tech"],["Sun cream","Toiletries"],["Insect repellent","Toiletries"],["Lip balm","Toiletries"],["Clean boots and outdoor gear (NZ biosecurity)","Before leaving"]]}
+};
+let C={};
+try{const r=localStorage.getItem("packing-shared-types-v1");if(r)C=JSON.parse(r)||{}}catch(e){}
+const saveC=()=>{try{localStorage.setItem("packing-shared-types-v1",JSON.stringify(C))}catch(e){}};
+const all=()=>({...T,...C});
+const em=n=>(all()[String(n).split(" + ")[0]]||{e:"🧳"}).e;
+const BASE=[["Passport or ID card","Documents"],["Tickets and bookings","Documents"],["Wallet and cards","Documents"],["Keys","Gear"],["Phone and charger","Tech"],["Toothbrush and toothpaste","Toiletries"],["Deodorant","Toiletries"],["Medication","Toiletries"]];
+const CATS=["Documents","Clothes","Toiletries","Tech","Gear","Kitchen","Before leaving"];
+let S={trips:[],cur:null,form:{types:["Travel"]}};
+try{const r=localStorage.getItem("packing-shared-v1");if(r)S.trips=JSON.parse(r)||[]}catch(e){}
+const save=()=>{try{localStorage.setItem("packing-shared-v1",JSON.stringify(S.trips))}catch(e){}};
+const uid=()=>Math.random().toString(36).slice(2,9);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const $=id=>document.getElementById(id);
+
+function mk(days,types){
+ const m=new Map();
+ const put=(t,c,p)=>{const k=t.toLowerCase(),o=m.get(k);if(o){if(p&&(!o.p||p>o.p))o.p=p;return}m.set(k,{t,c,p})};
+ BASE.forEach(([t,c])=>put(t,c));
+ types.forEach(ty=>(all()[ty]||{i:[]}).i.forEach(([t,c,p])=>put(t,c,p)));
+ return [...m.values()].map(o=>({id:uid(),t:o.p?o.t+" ×"+Math.max(1,Math.ceil(days*o.p)):o.t,c:o.c,d:false}));
+}
+function build(name,days,types){return{id:uid(),name,days,type:types.join(" + ")||"Essentials",items:mk(days,types)}}
+function pct(t){return t.items.length?Math.round(t.items.filter(i=>i.d).length/t.items.length*100):0}
+
+function home(){
+ const a=$("app"),F=S.form;
+ a.innerHTML=`<h1>Packing lists</h1><p class="sub">One list for every trip.</p>
+ ${S.trips.length?S.trips.map(t=>`<button class="trip" data-open="${t.id}"><b>${em(t.type)} ${esc(t.name)}</b><div style="color:var(--mute)">${t.days} days · ${t.items.filter(i=>i.d).length} of ${t.items.length} packed${t.sd?" · "+cdTxt(t):""}</div><div class="bar"><i style="width:${pct(t)}%"></i></div></button>`).join(""):`<div class="empty">No trips yet. Plan your first one below.</div>`}
+ <h2>New trip</h2>
+ <div class="card">
+  <label for="n">Trip name</label><input id="n" placeholder="Lisbon in May" maxlength="40">
+  <label for="dd">Destination (for weather and map)</label><input id="dd" placeholder="Lisbon" maxlength="60">
+  <label for="d">Number of days</label><input id="d" type="number" min="1" max="60" value="5" inputmode="numeric">
+  <label for="sd">Travel start date</label><input id="sd" type="date">
+  <label for="ed">Travel end date</label><input id="ed" type="date">
+  <label>Trip types (choose one or more to combine)</label>
+  <div class="types">${Object.keys(all()).map(k=>`<span class="row" style="gap:0"><button type="button" data-type="${esc(k)}" aria-pressed="${F.types.includes(k)}">${em(k)} ${esc(k)}</button>${C[k]?`<button type="button" class="x" data-deltype="${esc(k)}" aria-label="${T[k]?"Restore original":"Delete"} type ${esc(k)}">${T[k]?"↺":"×"}</button>`:""}</span>`).join("")}</div>
+  ${typeEd()}
+  <p style="color:var(--mute);font-size:.9rem;margin:12px 0">Clothing quantities adjust to the trip length. Items that appear in several types are listed once.</p>
+  <button class="btn" id="create">Create list</button>
+ </div>`;
+ const keep=()=>{F.name=$("n").value;F.dest=$("dd").value;F.days=$("d").value;F.sd=$("sd").value;F.ed=$("ed").value};
+ $("n").value=F.name||"";$("dd").value=F.dest||"";$("d").value=F.days||5;$("sd").value=F.sd||"";$("ed").value=F.ed||"";
+ $("sd").onchange=$("ed").onchange=()=>{const x=$("sd").value,y=$("ed").value;if(x&&y){const n=Math.round((new Date(y+"T00:00:00")-new Date(x+"T00:00:00"))/864e5)+1;if(n>=1)$("d").value=Math.min(60,n)}};
+ a.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{S.cur=b.dataset.open;trip()});
+ a.querySelectorAll("[data-type]").forEach(b=>b.onclick=()=>{keep();const k=b.dataset.type;F.types=F.types.includes(k)?F.types.filter(x=>x!==k):[...F.types,k];home()});
+ if($("nt"))$("nt").onclick=()=>{keep();F.edit="__new";home();$("tn").focus()};
+ if($("et"))$("et").onclick=()=>{keep();F.edit=F.types[0];home();$("ti").focus()};
+ if($("ct"))$("ct").onclick=()=>{keep();F.edit="";home()};
+ if($("st"))$("st").onclick=()=>{
+  const isNew=F.edit==="__new",nm=isNew?$("tn").value.trim():F.edit;
+  if(!nm){$("tn").focus();return}
+  if(isNew&&all()[nm]){alert("A type with that name already exists. Choose another name.");return}
+  const items=$("ti").value.split("\n").map(l=>l.trim()).filter(Boolean).map(l=>{
+   let c="Gear",p=0;const m=l.match(/^([A-Za-z ]+?):\s*(.+)$/);
+   if(m){const k=CATS.find(x=>[x,DECAT[x]].some(y=>y&&y.toLowerCase()===m[1].trim().toLowerCase()));if(k){c=k;l=m[2]}}
+   const pm=l.match(/\*(\d*\.?\d+)?$/);if(pm){p=pm[1]?parseFloat(pm[1]):1;l=l.slice(0,pm.index).trim()}
+   return l?(p?[l,c,p]:[l,c]):null}).filter(Boolean);
+  C[nm]={e:$("te").value.trim()||"✨",i:items};saveC();keep();
+  if(isNew)F.types=[...F.types,nm];
+  F.edit="";home();
+ };
+ a.querySelectorAll("[data-deltype]").forEach(b=>b.onclick=()=>{const k=b.dataset.deltype;
+  if(confirm(T[k]?"Restore the original “"+k+"” list?":"Delete the type “"+k+"”? Existing trips keep their lists.")){
+   delete C[k];saveC();keep();if(!T[k])F.types=F.types.filter(x=>x!==k);if(F.edit===k)F.edit="";home()}});
+ $("create").onclick=()=>{
+  const name=$("n").value.trim()||F.types.join(" + ")||"My trip";
+  const days=Math.min(60,Math.max(1,parseInt($("d").value)||5));
+  const t=build(name,days,F.types);t.dest=$("dd").value.trim();t.sd=$("sd").value;t.ed=$("ed").value;
+  if(t.sd&&t.ed&&t.ed<t.sd)t.ed=t.sd;
+  S.trips.unshift(t);save();S.cur=t.id;S.form={types:F.types};trip();
+ };
+}
+function trip(){
+ const t=S.trips.find(x=>x.id===S.cur);if(!t)return home();
+ const a=$("app");
+ const groups=CATS.map(c=>[c,t.items.filter(i=>i.c===c)]).filter(g=>g[1].length);
+ a.innerHTML=`<div class="top"><button class="btn ghost" id="back">Back</button><button class="btn ghost" id="del">Delete trip</button></div>
+ <h1>${em(t.type)} ${esc(t.name)}</h1>
+ <p class="sub">${t.days} days · <span id="pc">${pct(t)}</span>% packed</p>
+ ${cdCard(t)}
+ <div class="bar" style="margin:-8px 0 8px;height:10px"><i id="pb" style="width:${pct(t)}%"></i></div>
+ ${wxCard(t)}
+ ${groups.length?groups.map(([c,list])=>`<details class="category-group" open><summary>${CATEMOJI[c]||"📦"} ${esc(LANG==="de"?(DECAT[c]||c):c)} <small style="color:var(--mute);font-weight:400">(${list.length})</small></summary><div class="card" style="padding:4px 14px">${list.map(i=>`<div class="item ${i.d?"done":""}"><input type="checkbox" id="c${i.id}" data-id="${i.id}" ${i.d?"checked":""}><span class="item-icon">${itemEmoji(i.t)}</span><span class="item-text"><label for="c${i.id}" style="margin:0;color:inherit;font-size:1rem;cursor:pointer">${esc(i.t)}</label></span><button class="x" data-rm="${i.id}" aria-label="Remove ${esc(i.t)}">×</button></div>`).join("")}</div></details>`).join(""):`<div class="empty">This list is empty. Add your first item below.</div>`}
+ <h2>Add an item</h2>
+ <div class="card"><div class="row"><input id="ni" placeholder="Travel pillow" maxlength="60" aria-label="Item name"><select id="nc" style="width:auto" aria-label="Category">${CATS.map(c=>`<option value="${c}">${categoryLabel(c)}</option>`).join("")}</select></div>
+ <button class="btn" id="add" style="margin-top:10px">Add item</button></div>
+ <h2>Add a whole type</h2>
+ <div class="card"><div class="row"><select id="mt" aria-label="Trip type">${Object.keys(all()).map(k=>`<option value="${esc(k)}">${esc(k)}</option>`).join("")}</select><button class="btn" id="mg" style="flex:none">Add</button></div><p class="wx" style="margin:8px 0 0">Items already on your list are skipped.</p></div>
+ <div class="route-tools"><button class="btn ghost" id="reset">Uncheck everything</button><button class="btn" id="pdf">📄 Export PDF</button></div>`;
+ $("back").onclick=()=>{S.cur=null;home()};bindWx(t);
+ $("del").onclick=()=>{if(confirm("Delete “"+t.name+"”?")){S.trips=S.trips.filter(x=>x.id!==t.id);save();S.cur=null;home()}};
+ a.querySelectorAll("[data-id]").forEach(c=>c.onchange=()=>{
+  const it=t.items.find(i=>i.id===c.dataset.id);it.d=c.checked;save();
+  c.closest(".item").classList.toggle("done",it.d);
+  $("pc").textContent=pct(t);$("pb").style.width=pct(t)+"%";
+ });
+ a.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{t.items=t.items.filter(i=>i.id!==b.dataset.rm);save();trip()});
+ const addItem=()=>{const v=$("ni").value.trim();if(!v){$("ni").focus();return}
+  t.items.push({id:uid(),t:v,c:$("nc").value,d:false});save();trip();$("ni").focus()};
+ $("add").onclick=addItem;
+ $("ni").onkeydown=e=>{if(e.key==="Enter")addItem()};
+ $("reset").onclick=()=>{t.items.forEach(i=>i.d=false);save();trip()};
+  $("pdf").onclick=()=>{const old=document.title;document.title=(t.name||"Packing list").replace(/[^a-z0-9 _-]/gi,"");window.print();setTimeout(()=>document.title=old,1000)};
+ $("mg").onclick=()=>{const bs=x=>x.replace(/ ×\d+$/,"").toLowerCase(),have=new Set(t.items.map(i=>bs(i.t)));
+  const add=mk(t.days,[$("mt").value]).filter(i=>!have.has(bs(i.t)));
+  if(!add.length){alert("Everything from that type is already on your list.");return}
+  t.items.push(...add);save();trip()};
+}
+const dd=s=>{const t0=new Date();t0.setHours(0,0,0,0);return Math.round((new Date(s+"T00:00:00")-t0)/864e5)};
+const isoIn=k=>{const d=new Date();d.setDate(d.getDate()+k);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+function cdTxt(t){const d=dd(t.sd);
+ if(d>1)return d+" days to go";if(d===1)return "Departs tomorrow";if(d===0)return "Departs today";
+ return d+t.days>0?"Day "+(1-d)+" of "+t.days:"Trip finished"}
+const isoAdd=(x,k)=>{const d=new Date(x+"T00:00:00");d.setDate(d.getDate()+k);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+function cdCard(t){
+ const f=x=>x?new Date(x+"T00:00:00").toLocaleDateString(LANG==="de"?"de-DE":undefined,{weekday:"short",day:"numeric",month:"short"}):"";
+ const ed=t.sd?(t.ed||isoAdd(t.sd,t.days-1)):"";
+ return `<div class="card"><div style="font-size:1.5rem;font-weight:800;line-height:1.2">${t.sd?cdTxt(t):"No dates yet"}</div><div style="color:var(--mute)">${t.sd?f(t.sd)+" to "+f(ed)+" · "+t.days+" days":"Set a start date to see the countdown"}</div>
+ <div class="row" style="margin-top:10px"><div style="flex:1"><label for="sdc" style="margin-top:0">Start</label><input id="sdc" type="date" value="${t.sd||""}"></div><div style="flex:1"><label for="edc" style="margin-top:0">End</label><input id="edc" type="date" value="${ed}"></div></div></div>`}
+function typeEd(){
+ const F=S.form,ed=F.edit;
+ if(!ed)return `<div class="row" style="margin-top:10px;flex-wrap:wrap"><button type="button" class="btn ghost" id="nt">New trip type</button>${F.types[0]?`<button type="button" class="btn ghost" id="et">Edit “${esc(F.types[0])}”</button>`:""}</div>`;
+ const isNew=ed==="__new",ty=isNew?null:(all()[ed]||{e:"✨",i:[]});
+ const txt=isNew?"":ty.i.map(([t,c,p])=>(c==="Gear"?"":c+": ")+t+(p?"*"+(p===1?"":p):"")).join("\n");
+ return `<div class="card" style="margin:12px 0 0"><b>${isNew?"New trip type":"Edit “"+esc(ed)+"”"}</b>
+<div class="row" style="margin-top:8px"><input id="tn" placeholder="Camping" maxlength="30" aria-label="Type name" value="${isNew?"":esc(ed)}" ${isNew?"":"disabled"}><input id="te" placeholder="✨" maxlength="4" style="width:76px" aria-label="Emoji" value="${isNew?"":esc(ty.e)}"></div>
+<label for="ti">Items, one per line</label><textarea id="ti" rows="8" placeholder="Tent&#10;Clothes: Socks*&#10;Documents: Permit">${esc(txt)}</textarea>
+<p style="color:var(--mute);font-size:.85rem;margin:6px 0 10px">Start a line with Documents, Clothes, Toiletries, Tech, Gear, Kitchen or Before leaving and a colon to set the category (Gear is the default). Add * to pack one per day, or *0.5 for one every two days. Passport, charger and toiletries are always included. Changes apply to new trips only.</p>
+<div class="row"><button type="button" class="btn" id="st">Save type</button><button type="button" class="btn ghost" id="ct">Cancel</button></div></div>`}
+const CATEMOJI={"Documents":"🛂","Clothes":"👕","Toiletries":"🧴","Tech":"🔌","Gear":"🎒","Kitchen":"🍳","Before leaving":"🏠"};
+const ITEMEMOJI=[
+ [/passport|id card|licen[cs]e|permit|visa|ticket|booking|insurance|chart|pass/i,"🛂"],
+ [/shirt|t-shirt|pants|shorts|underwear|sock|jacket|coat|sweater|pullover|pyjama|shoe|sandals|swimsuit|trunks|hat|gloves|beanie|thermal|fleece|rain pants|gaiter/i,"👕"],
+ [/tooth|shampoo|soap|deodorant|razor|comb|tissue|floss|nail|sun cream|lip balm|insect repellent|medication|first-aid/i,"🧴"],
+ [/phone|charger|power bank|adapter|earphone|camera|sd card|sim card|offline maps|card reader/i,"🔌"],
+ [/tent|sleeping|mat|headlamp|water bottle|hydration|backpack|day bag|dry bag|sunglasses|umbrella|snack|stove|fuel|lighter|trash|towel|tape|scissors|helmet|goggles|board|wrist guard|lock|keys|wallet/i,"🎒"],
+ [/cookware|plate|cutlery|cup|kitchen|dish|food|salt|oil/i,"🍳"],
+ [/trash|plants|appliances|lock doors|windows/i,"🏠"]
+];
+function itemEmoji(name){for(const [re,emoji] of ITEMEMOJI)if(re.test(name))return emoji;return "📦"}
+function categoryLabel(c){return (CATEMOJI[c]||"📦")+" "+(LANG==="de"?(DECAT[c]||c):c)}
+function wxCard(t){
+ const stops=t.route||[];
+ return `<h2>Weather · next 3 days</h2><div class="card">
+ <div class="top" style="margin:0"><b>🌤️ ${esc(t.dest||"Choose a destination")}</b><a href="https://www.meteoblue.com/" target="_blank" rel="noopener">Meteoblue ↗</a></div>
+ <div class="wx" id="wxo">${t.dest?"Loading 3-day forecast…":"Set a destination below to see the forecast."}</div>
+ </div>
+ <h2>Journey planner</h2><div class="card">
+ <p class="wx" style="margin-top:0">Add each stop in order. Choose the transport used to reach each stop. The map connects your locations with illustrative straight lines.</p>
+ <div id="route-editor">${stops.map((s,i)=>routeStopHTML(s,i)).join("")}</div>
+ <div class="route-tools"><button class="btn ghost" type="button" id="addstop">＋ Add destination</button><button class="btn" type="button" id="saveroute">Save journey & show map</button></div>
+ <div id="route-msg" class="wx" aria-live="polite"></div><div id="map"></div>
+ </div>`;
+}
+function routeStopHTML(s,i){
+ const modes=[["home","🧳 Home"],["plane","✈️ Airplane"],["train","🚆 Train"],["bus","🚌 Bus"],["car","🚗 Car"],["ship","🚢 Ship"],["walk","🚶 Walk"]];
+ return `<div class="route-stop" data-stop="${i}">
+ <input aria-label="Stop ${i+1}" class="stop-place" maxlength="90" placeholder="${i===0?"Starting point (e.g. Home)":"Destination"}" value="${esc(s.place||"")}">
+ <select class="stop-mode" aria-label="Transport to stop ${i+1}">${modes.map(([v,l])=>`<option value="${v}" ${((s.mode||(i===0?"home":"plane"))===v)?"selected":""}>${l}</option>`).join("")}</select>
+ <label class="route-booked"><input type="checkbox" class="stop-booked" ${s.booked?"checked":""}> ${LANG==="de"?"Ticket gebucht":"Ticket booked"}</label>
+ <button type="button" class="x" data-removestop="${i}" aria-label="Remove stop">×</button>
+ </div>`;
+}
+function bindWx(t){
+ if($("sdc"))$("sdc").onchange=()=>{const a=$("sdc").value;t.sd=a;t.ed=a?isoAdd(a,t.days-1):"";save();trip()};
+ if($("edc"))$("edc").onchange=()=>{const b=$("edc").value;if(!b||!t.sd)return;t.ed=b<t.sd?t.sd:b;t.days=Math.max(1,Math.min(60,Math.round((new Date(t.ed+"T00:00:00")-new Date(t.sd+"T00:00:00"))/864e5)+1));save();trip()};
+ if(t.dest)loadWx(t);
+ let route=(t.route&&t.route.length)?t.route:[{place:t.dest||"",mode:"home"}];
+ const editor=$("route-editor");
+ const redraw=()=>{editor.innerHTML=route.map(routeStopHTML).join("");bindRouteRows()};
+ const bindRouteRows=()=>{
+  editor.querySelectorAll("[data-removestop]").forEach(b=>b.onclick=()=>{route.splice(Number(b.dataset.removestop),1);redraw()});
+  editor.querySelectorAll(".stop-place").forEach((el,i)=>el.oninput=()=>{route[i].place=el.value});
+  editor.querySelectorAll(".stop-mode").forEach((el,i)=>el.onchange=()=>{route[i].mode=el.value});
+  editor.querySelectorAll(".stop-booked").forEach((el,i)=>el.onchange=()=>{route[i].booked=el.checked;save()});
+ };
+ bindRouteRows();
+ $("addstop").onclick=()=>{route.push({place:"",mode:"plane"});redraw();editor.querySelectorAll(".stop-place")[route.length-1].focus()};
+ $("saveroute").onclick=async()=>{
+  route=[...editor.querySelectorAll(".route-stop")].map((row,i)=>({place:row.querySelector(".stop-place").value.trim(),mode:row.querySelector(".stop-mode").value,booked:row.querySelector(".stop-booked").checked}));
+  route=route.filter(s=>s.place);
+  if(!route.length){$("route-msg").textContent="Add at least one location.";return}
+  t.route=route;t.dest=route[route.length-1].place;t.geo=null;save();
+  $("route-msg").textContent="Finding locations and drawing your journey…";
+  await drawRoute(t);
+  if(t.dest)loadWx(t);
+ };
+ if(t.route&&t.route.length)drawRoute(t);
+}
+const MODEICON={home:"🧳",plane:"✈️",train:"🚆",bus:"🚌",car:"🚗",ship:"🚢",walk:"🚶"};
+async function geocodePlace(place){
+ const url="https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&name="+encodeURIComponent(place);
+ const data=await(await fetch(url)).json();
+ if(!data.results||!data.results.length)throw new Error("Could not find "+place);
+ return {lat:data.results[0].latitude,lon:data.results[0].longitude,name:data.results[0].name};
+}
+async function drawRoute(t){
+ const mapEl=$("map");if(!mapEl||typeof L==="undefined")return;
+ const route=t.route||[];if(!route.length)return;
+ const msg=$("route-msg");if(msg)msg.textContent="Finding locations…";
+ try{
+  const points=[];
+  for(const stop of route){const p=await geocodePlace(stop.place);points.push({...p,place:stop.place,mode:stop.mode})}
+  t.routeGeo=points;save();mapEl.style.display="block";
+  if(t.leafletMap){t.leafletMap.remove();t.leafletMap=null}
+  const map=L.map("map");
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"© OpenStreetMap contributors"}).addTo(map);
+  t.leafletMap=map;
+  points.forEach((p,i)=>{
+   const icon=L.divIcon({html:`<div style="font-size:25px;background:white;border:1px solid #ccd4df;border-radius:20px;padding:3px 5px;box-shadow:0 1px 5px #777">${i===0?"🧳":(MODEICON[p.mode]||"📍")}</div>`,className:"",iconSize:[38,38],iconAnchor:[19,19]});
+   L.marker([p.lat,p.lon],{icon}).addTo(map).bindPopup(`<b>${esc(p.place)}</b><br>${MODEICON[p.mode]||"📍"} ${p.mode}`);
+  });
+  if(points.length>1){
+   L.polyline(points.map(p=>[p.lat,p.lon]),{color:"#2a5db0",weight:3,dashArray:"7 7"}).addTo(map);
+   points.slice(1).forEach((p,i)=>{
+    const mid=[(points[i].lat+p.lat)/2,(points[i].lon+p.lon)/2];
+    L.marker(mid,{icon:L.divIcon({html:`<div style="font-size:21px">${MODEICON[p.mode]||"✈️"}</div>`,className:"",iconSize:[28,28],iconAnchor:[14,14]})}).addTo(map);
+   });
+  }
+  map.fitBounds(points.map(p=>[p.lat,p.lon]),{padding:[25,25],maxZoom:6});
+  if(msg)msg.textContent="Journey mapped. Lines are illustrative connections, not navigational routes.";
+ }catch(e){if(msg)msg.textContent=e.message+" — check the place name or internet connection."}
+}
+async function loadWx(t){
+ const o=$("wxo");if(!o||!t.dest)return;o.textContent="Loading forecast…";
+ try{
+  if(!t.geo){const p=await geocodePlace(t.dest);t.geo={lat:p.lat,lon:p.lon};save()}
+  const url=`https://api.open-meteo.com/v1/forecast?latitude=${t.geo.lat}&longitude=${t.geo.lon}&daily=temperature_2m_max,temperature_2m_min,wind_speed_10m_max&forecast_days=3&timezone=auto`;
+  const data=await(await fetch(url)).json(),d=data.daily;
+  if(!d||!d.time)throw new Error("Forecast unavailable");
+  const days=d.time.map((date,i)=>`<div class="weather-day"><b>${new Date(date+"T12:00:00").toLocaleDateString(LANG==="de"?"de-DE":"en-GB",{weekday:"short",day:"numeric",month:"short"})}</b><div class="temp">${Math.round(d.temperature_2m_max[i])}° / ${Math.round(d.temperature_2m_min[i])}°C</div><small>🌡️ Max / Min</small><small>💨 ${Math.round(d.wind_speed_10m_max[i])} km/h</small></div>`).join("");
+  o.innerHTML=`<div class="weather-grid">${days}</div><small>Forecast by <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> · More details: <a href="https://www.meteoblue.com/" target="_blank" rel="noopener">Meteoblue</a></small>`;
+ }catch(e){o.textContent="Could not load the forecast. Check the destination and internet connection."}
+}
+const DE={"Passport or ID card": "Reisepass oder Ausweis", "Tickets and bookings": "Tickets und Buchungen", "Wallet and cards": "Geldbeutel und Karten", "Keys": "Schlüssel", "Phone and charger": "Handy und Ladegerät", "Toothbrush and toothpaste": "Zahnbürste und Zahnpasta", "Deodorant": "Deo", "Medication": "Medikamente", "T-shirts": "T-Shirts", "Casual pants or shorts": "Freizeithose oder Shorts", "Underwear": "Unterwäsche", "Socks": "Socken", "Jacket or coat": "Jacke oder Mantel", "Comfortable shoes": "Bequeme Schuhe", "Day bag": "Tagesrucksack", "Snacks": "Snacks", "Hiking shoes": "Wanderschuhe", "Hiking pants": "Wanderhose", "Hiking shirts": "Wandershirts", "Hiking socks": "Wandersocken", "Rain jacket": "Regenjacke", "Hat (sun or hiking)": "Sonnen- oder Wanderhut", "Water bottle": "Trinkflasche", "First-aid kit": "Erste-Hilfe-Set", "Headlamp": "Stirnlampe", "Offline maps": "Offline-Karten", "Sun cream": "Sonnencreme", "Travel insurance papers": "Reiseversicherungsunterlagen", "Driver’s licence": "Führerschein", "Sweater or pullover": "Pullover", "Pyjamas": "Schlafanzug", "Swimsuit or trunks": "Badeanzug oder Badehose", "Power adapter": "Reiseadapter", "Power bank": "Powerbank", "Earphones + charger": "Kopfhörer + Ladegerät", "Sunglasses": "Sonnenbrille", "Umbrella": "Regenschirm", "Travel locks": "Reiseschlösser", "Laundry bag": "Wäschebeutel", "Shampoo and conditioner": "Shampoo und Spülung", "Soap or body wash": "Seife oder Duschgel", "Comb": "Kamm", "Razor": "Rasierer", "Tissues and wet wipes": "Taschentücher und Feuchttücher", "Dental floss": "Zahnseide", "Nail clippers": "Nagelknipser", "Take out the trash": "Müll rausbringen", "Water the plants": "Pflanzen gießen", "Switch off appliances": "Geräte ausschalten", "Lock doors and windows": "Türen und Fenster abschließen", "Campsite booking": "Campingplatz-Buchung", "Sandals": "Sandalen", "Tent": "Zelt", "Sleeping bag": "Schlafsack", "Sleeping mat": "Isomatte", "Lighter": "Feuerzeug", "Trash bags": "Müllsäcke", "Camping stove and fuel": "Campingkocher und Brennstoff", "Quick-dry towel": "Schnelltrocknendes Handtuch", "Cookware": "Kochgeschirr", "Plates and cutlery": "Teller und Besteck", "Cups": "Tassen", "Kitchen paper": "Küchenpapier", "Dish soap and sponge": "Spülmittel und Schwamm", "Food and snacks": "Essen und Snacks", "Salt and cooking oil": "Salz und Speiseöl", "Insect repellent": "Insektenschutz", "Lift pass": "Skipass", "Snowboard jacket": "Snowboardjacke", "Snowboard pants": "Snowboardhose", "Thermal layers": "Thermounterwäsche", "Snowboard socks": "Snowboardsocken", "Gloves": "Handschuhe", "Beanie": "Mütze", "Neck gaiter": "Halswärmer", "Board and boots": "Board und Schuhe", "Helmet": "Helm", "Goggles": "Skibrille", "Wrist guards": "Handgelenkschützer", "Lip balm": "Lippenpflege", "NZeTA (if required)": "NZeTA (falls erforderlich)", "International driving permit": "Internationaler Führerschein", "Hut or campsite bookings": "Hütten- oder Campingplatzbuchungen", "Declare outdoor gear and food on arrival": "Outdoor-Ausrüstung und Lebensmittel bei Ankunft deklarieren", "Merino base layers": "Merino-Funktionsunterwäsche", "Fleece or warm layer": "Fleece oder warme Schicht", "Rain pants": "Regenhose", "Warm hat and gloves": "Warme Mütze und Handschuhe", "Day pack": "Tagesrucksack", "Dry bag": "Wasserdichter Packsack", "Power adapter (type I)": "Reiseadapter (Typ I)", "Clean boots and outdoor gear (NZ biosecurity)": "Schuhe und Ausrüstung reinigen (NZ-Biosicherheit)", "Warm jacket": "Warme Jacke", "Documents": "Dokumente", "Clothes": "Kleidung", "Toiletries": "Hygiene", "Tech": "Technik", "Gear": "Ausrüstung", "Kitchen": "Küche", "Before leaving": "Vor der Abreise", "Fluglager": "Fluglager", "Licences (SPL, BZF, medical)": "Lizenzen (SPL, BZF, Medical)", "ICAO chart": "ICAO-Karte", "Flying shoes": "Flugschuhe", "Flying pants": "Flughose", "Anti-UV jacket": "UV-Schutzjacke", "Sun protection sleeves": "Sonnenschutz-Ärmel", "Sun hat": "Sonnenhut", "Flying backpack": "Flugrucksack", "Hydration bladder": "Trinksack", "Adhesive tape": "Klebeband", "Scissors": "Schere", "Phone holder (flying)": "Handyhalter (Fliegen)", "SD card + card reader": "SD-Karte + Kartenleser", "Action camera + batteries + SIM cards + charger": "Actioncam + Akkus + SIM-Karten + Ladegerät", "Anti-UV lip balm": "Lippenpflege mit UV-Schutz", "Hiking": "Wandern", "Travel": "Reise", "Camping": "Camping", "Snowboarding": "Snowboarden", "New Zealand": "Neuseeland", "Essentials": "Grundausstattung", "Packing lists": "Packlisten", "One list for every trip.": "Für jede Reise die passende Liste.", "No trips yet. Plan your first one below.": "Noch keine Reisen. Plane unten deine erste.", "New trip": "Neue Reise", "Trip name": "Reisename", "Destination (for weather and map)": "Reiseziel (für Wetter und Karte)", "Number of days": "Anzahl Tage", "Travel start date": "Reisebeginn", "Travel end date": "Reiseende", "Trip types (choose one or more to combine)": "Reisearten (eine oder mehrere zum Kombinieren wählen)", "Clothing quantities adjust to the trip length. Items that appear in several types are listed once.": "Die Kleidungsmengen passen sich der Reisedauer an. Dinge, die in mehreren Reisearten vorkommen, erscheinen nur einmal.", "Create list": "Liste erstellen", "Back": "Zurück", "Delete trip": "Reise löschen", "This list is empty. Add your first item below.": "Diese Liste ist leer. Füge unten den ersten Eintrag hinzu.", "Add an item": "Eintrag hinzufügen", "Add item": "Hinzufügen", "Add a whole type": "Ganze Reiseart hinzufügen", "Add": "Hinzufügen", "Items already on your list are skipped.": "Einträge, die schon auf deiner Liste stehen, werden übersprungen.", "Uncheck everything": "Alle Haken entfernen", "No dates yet": "Noch keine Daten", "Set a start date to see the countdown": "Lege einen Reisebeginn fest, um den Countdown zu sehen", "Start": "Beginn", "End": "Ende", "New trip type": "Neue Reiseart", "Items, one per line": "Einträge, einer pro Zeile", "Save type": "Reiseart speichern", "Cancel": "Abbrechen", "Destination": "Reiseziel", "Change": "Ändern", "Set": "Festlegen", "Departs tomorrow": "Abreise morgen", "Departs today": "Abreise heute", "Trip finished": "Reise beendet", "Loading weather…": "Wetter wird geladen…", "Couldn’t find that place. Choose Change and try a city name.": "Ort nicht gefunden. Wähle „Ändern“ und gib einen Städtenamen ein.", "Weather and map need an internet connection.": "Wetter und Karte brauchen eine Internetverbindung.", "A type with that name already exists. Choose another name.": "Eine Reiseart mit diesem Namen gibt es schon. Wähle einen anderen Namen.", "Everything from that type is already on your list.": "Alles aus dieser Reiseart steht schon auf deiner Liste.", "Start a line with Documents, Clothes, Toiletries, Tech, Gear, Kitchen or Before leaving and a colon to set the category (Gear is the default). Add * to pack one per day, or *0.5 for one every two days. Passport, charger and toiletries are always included. Changes apply to new trips only.": "Beginne eine Zeile mit Dokumente, Kleidung, Hygiene, Technik, Ausrüstung, Küche oder Vor der Abreise und einem Doppelpunkt, um die Kategorie festzulegen (Standard: Ausrüstung). Mit * packst du eines pro Tag ein, mit *0.5 eines alle zwei Tage. Ausweis, Ladegerät und Hygieneartikel sind immer dabei. Änderungen gelten nur für neue Reisen.", "Category": "Kategorie", "Item name": "Name des Eintrags", "Trip type": "Reiseart", "Type name": "Name der Reiseart", "Emoji": "Emoji"};
+const PH={"Lisbon in May": "Lissabon im Mai", "Lisbon": "Lissabon", "Travel pillow": "Nackenkissen", "Tent\nClothes: Socks*\nDocuments: Permit": "Zelt\nKleidung: Socken*\nDokumente: Ausweis"};
+const DECAT={"Documents": "Dokumente", "Clothes": "Kleidung", "Toiletries": "Hygiene", "Tech": "Technik", "Gear": "Ausrüstung", "Kitchen": "Küche", "Before leaving": "Vor der Abreise"};
+let LANG="en";
+try{LANG=localStorage.getItem("packing-lang")||((typeof navigator!=="undefined"&&(navigator.language||"").toLowerCase().startsWith("de"))?"de":"en")}catch(e){}
+const nT=n=>n===1?"1 Tag":n+" Tage";
+const RULES=[
+ [/^(\d+) days to go$/,(m,n)=>"Noch "+nT(+n)],
+ [/^Day (\d+) of (\d+)$/,(m,a,b)=>"Tag "+a+" von "+b],
+ [/^(\d+) days ·$/,(m,n)=>nT(+n)+" ·"],
+ [/^(\d+) days · (\d+) of (\d+) packed(?: · (.+))?$/,(m,d,a,b,c)=>nT(+d)+" · "+a+" von "+b+" gepackt"+(c?" · "+tx(c):"")],
+ [/^(.+) to (.+) · (\d+) days$/,(m,a,b,d)=>a+" bis "+b+" · "+nT(+d)],
+ [/^% packed$/,()=>"% gepackt"],
+ [/^Remove (.+)$/,(m,x)=>tx(x)+" entfernen"],
+ [/^Delete type (.+)$/,(m,x)=>"Reiseart "+tx(x)+" löschen"],
+ [/^Restore original type (.+)$/,(m,x)=>"Original von "+tx(x)+" wiederherstellen"],
+ [/^Edit “(.+)”$/,(m,x)=>"„"+tx(x)+"“ bearbeiten"],
+ [/^Delete “(.+)”\?$/,(m,x)=>"„"+x+"“ löschen?"],
+ [/^Delete the type “(.+)”\? Existing trips keep their lists\.$/,(m,x)=>"Reiseart „"+x+"“ löschen? Bestehende Reisen behalten ihre Listen."],
+ [/^Restore the original “(.+)” list\?$/,(m,x)=>"Originalliste „"+tx(x)+"“ wiederherstellen?"],
+ [/^\+ (.+)$/,(m,x)=>"+ "+tx(x)]
+];
+function tx(s){
+ if(LANG!=="de"||!s)return s;
+ const d=DE[s];if(typeof d==="string")return d;
+ if(/°C, rain chance up to/.test(s))return s.replace(/Next (\d+) days?/,(m,n)=>n==="1"?"Nächster Tag":"Nächste "+n+" Tage").replace("Your trip dates","Deine Reisedaten").replace("(first days)","(erste Tage)").replace("(your dates are too far ahead for a forecast)","(deine Reisedaten liegen noch zu weit in der Zukunft)").replace(/° to (-?\d+)°C, rain chance up to (\d+)%/,"° bis $1°C, Regenwahrscheinlichkeit bis zu $2 %");
+ let m;
+ for(const [re,f] of RULES){if(m=s.match(re))return f(...m)}
+ if(m=s.match(/^(.+?) ×(\d+)$/)){const b=tx(m[1]);if(b!==m[1])return b+" ×"+m[2]}
+ if(s.includes(" + ")){const p=s.split(" + "),q=p.map(tx);if(q.some((x,i)=>x!==p[i]))return q.join(" + ")}
+ if(m=s.match(/^([^\p{L}\p{N}]+)\s+(.+)$/u)){const r=tx(m[2]);if(r!==m[2])return m[1]+" "+r}
+ return s;
+}
+const SKIP=new Set(["TEXTAREA","SCRIPT","STYLE"]);
+function walk(root){
+ const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;
+ while(n=w.nextNode()){if(SKIP.has(n.parentNode.nodeName))continue;const v=n.nodeValue,c=v.trim();if(!c)continue;const r=tx(c);if(r!==c)n.nodeValue=v.replace(c,()=>r)}
+ root.querySelectorAll("[placeholder],[aria-label]").forEach(e=>{
+  const p=e.getAttribute("placeholder");if(p){const r=PH[p]||tx(p);if(r!==p)e.setAttribute("placeholder",r)}
+  const a=e.getAttribute("aria-label");if(a){const r=tx(a);if(r!==a)e.setAttribute("aria-label",r)}});
+}
+const _c=window.confirm.bind(window),_a=window.alert.bind(window);
+window.confirm=m=>_c(tx(m));window.alert=m=>_a(tx(m));
+const obs=new MutationObserver(()=>{if(LANG!=="de")return;obs.disconnect();walk($("app"));obs.observe($("app"),{childList:true,characterData:true,subtree:true})});
+obs.observe($("app"),{childList:true,characterData:true,subtree:true});
+function setLang(){$("lg").textContent=LANG==="de"?"English":"Deutsch";document.documentElement.lang=LANG;document.title=LANG==="de"?"Packlisten":"Packing Lists"}
+$("lg").onclick=()=>{LANG=LANG==="de"?"en":"de";try{localStorage.setItem("packing-lang",LANG)}catch(e){}setLang();S.cur?trip():home()};
+setLang();
+home();
+</script>
+</body>
+</html>
