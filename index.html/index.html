@@ -20,7 +20,7 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.45 "Bricolage Grotesque",system-ui,sans-serif}
 .stripe{height:10px;background:repeating-linear-gradient(-45deg,var(--red) 0 14px,var(--paper) 14px 24px,var(--blue) 24px 38px,var(--paper) 38px 48px)}
-main{max-width:560px;margin:0 auto;padding:20px 16px 60px}
+main{max-width:760px;margin:0 auto;padding:20px 16px 60px}
 h1{font-size:2rem;font-weight:800;margin:0 0 4px;letter-spacing:-.02em}
 h2{font-size:1.05rem;font-weight:600;margin:24px 0 8px;color:var(--blue)}
 p.sub{margin:0 0 20px;color:var(--mute)}
@@ -58,10 +58,10 @@ textarea{font:inherit;color:inherit;background:var(--paper);border:1.5px solid v
 .weather-day b{display:block;font-size:.88rem}
 .weather-day .temp{font-size:1.05rem;font-weight:800;margin:5px 0}
 .weather-day small{display:block;color:var(--mute);font-size:.78rem}
-.route-stop{display:grid;grid-template-columns:minmax(0,1fr) 112px auto 36px;gap:7px;align-items:center;margin:8px 0}
-.route-stop input,.route-stop select{padding:8px}
+.route-stop{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(112px,.8fr) 36px;gap:8px;align-items:center;margin:10px 0;padding:12px;background:var(--paper);border:1px solid var(--line);border-radius:14px}.stop-stay{grid-column:1/3;display:flex;align-items:center;gap:8px}.stop-stay label{margin:0;font-size:.78rem;white-space:nowrap}.stop-stay input{max-width:84px;padding:8px 10px}.route-stop .route-booked{grid-column:1/3}.route-stop .x{grid-column:3;grid-row:1}
+.route-stop input,.route-stop select{padding:9px 10px}.place-wrap{position:relative;min-width:0}.place-suggestions{position:absolute;z-index:1000;top:100%;left:0;right:0;background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px #14233b22;max-height:220px;overflow:auto}.place-suggestions button{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:9px 10px;font-size:.88rem}.route-stop .stop-place,.route-stop .stop-mode{min-width:0}.weather-grid{gap:6px;margin-top:8px}.weather-day{padding:8px 4px}.weather-day .temp{font-size:.98rem;margin:3px 0}.weather-day small{font-size:.72rem}.date-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}.date-pair>div{min-width:0}.date-pair input{border-radius:13px;min-height:48px;padding:10px 12px;box-shadow:0 2px 8px #14233b0a}.date-pair label{font-weight:600;margin:0 0 6px}.item{gap:7px;padding:8px 0}.item-icon{width:25px;font-size:1.08rem}.item input[type=checkbox]{width:21px;height:21px}
 .route-stop .x{font-size:1.2rem}.route-booked{display:flex;align-items:center;gap:5px;white-space:nowrap;font-size:.78rem;color:var(--mute)}.route-booked input{width:16px;height:16px;accent-color:var(--ok)}
-@media(max-width:520px){.route-stop{grid-template-columns:minmax(0,1fr) 36px}.route-stop .stop-mode{grid-column:1}.route-stop .route-booked{grid-column:1}.route-stop .x{grid-column:2;grid-row:1}}
+@media(max-width:520px){main{padding:14px 12px 48px}.route-stop{grid-template-columns:minmax(0,1fr) minmax(100px,.72fr) 30px;gap:6px;padding:9px}.stop-stay{grid-column:1/3}.route-stop .route-booked{grid-column:1/3}.route-stop .x{grid-column:3;grid-row:1}.date-pair{gap:10px}.date-pair input{font-size:16px}.card{padding:12px;border-radius:15px}.weather-day{padding:7px 3px}.weather-day .temp{font-size:.9rem}}
 .route-line{display:flex;align-items:center;gap:8px;color:var(--mute);font-size:.88rem;padding:3px 0}
 .route-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .item-icon{width:28px;flex:none;text-align:center;font-size:1.15rem}
@@ -126,18 +126,18 @@ function home(){
  <div class="card">
   <label for="n">Trip name</label><input id="n" placeholder="Lisbon in May" maxlength="40">
   <label for="dd">Destination (for weather and map)</label><input id="dd" placeholder="Lisbon" maxlength="60">
-  <label for="d">Number of days</label><input id="d" type="number" min="1" max="60" value="5" inputmode="numeric">
-  <label for="sd">Travel start date</label><input id="sd" type="date">
-  <label for="ed">Travel end date</label><input id="ed" type="date">
+  <div class="date-pair" style="margin-top:12px"><div><label for="sd">Travel start date</label><input id="sd" type="date"></div><div><label for="ed">Stay until</label><input id="ed" type="date"></div></div>
+  <div class="wx" id="dn" style="margin:6px 0 0"></div>
   <label>Trip types (choose one or more to combine)</label>
   <div class="types">${Object.keys(all()).map(k=>`<span class="row" style="gap:0"><button type="button" data-type="${esc(k)}" aria-pressed="${F.types.includes(k)}">${em(k)} ${esc(k)}</button>${C[k]?`<button type="button" class="x" data-deltype="${esc(k)}" aria-label="${T[k]?"Restore original":"Delete"} type ${esc(k)}">${T[k]?"↺":"×"}</button>`:""}</span>`).join("")}</div>
   ${typeEd()}
   <p style="color:var(--mute);font-size:.9rem;margin:12px 0">Clothing quantities adjust to the trip length. Items that appear in several types are listed once.</p>
   <button class="btn" id="create">Create list</button>
  </div>`;
- const keep=()=>{F.name=$("n").value;F.dest=$("dd").value;F.days=$("d").value;F.sd=$("sd").value;F.ed=$("ed").value};
- $("n").value=F.name||"";$("dd").value=F.dest||"";$("d").value=F.days||5;$("sd").value=F.sd||"";$("ed").value=F.ed||"";
- $("sd").onchange=$("ed").onchange=()=>{const x=$("sd").value,y=$("ed").value;if(x&&y){const n=Math.round((new Date(y+"T00:00:00")-new Date(x+"T00:00:00"))/864e5)+1;if(n>=1)$("d").value=Math.min(60,n)}};
+ const keep=()=>{F.name=$("n").value;F.dest=$("dd").value;F.sd=$("sd").value;F.ed=$("ed").value};
+ $("n").value=F.name||"";$("dd").value=F.dest||"";$("sd").value=F.sd||isoIn(0);$("ed").value=F.ed||isoAdd($("sd").value,4);
+ const upd=()=>{if($("ed").value<$("sd").value)$("ed").value=$("sd").value;const n=diff($("sd").value,$("ed").value)+1;$("dn").textContent=n>0?n+(n===1?" day":" days"):""};
+ $("sd").onchange=$("ed").onchange=upd;upd();
  a.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{S.cur=b.dataset.open;trip()});
  a.querySelectorAll("[data-type]").forEach(b=>b.onclick=()=>{keep();const k=b.dataset.type;F.types=F.types.includes(k)?F.types.filter(x=>x!==k):[...F.types,k];home()});
  if($("nt"))$("nt").onclick=()=>{keep();F.edit="__new";home();$("tn").focus()};
@@ -161,9 +161,10 @@ function home(){
    delete C[k];saveC();keep();if(!T[k])F.types=F.types.filter(x=>x!==k);if(F.edit===k)F.edit="";home()}});
  $("create").onclick=()=>{
   const name=$("n").value.trim()||F.types.join(" + ")||"My trip";
-  const days=Math.min(60,Math.max(1,parseInt($("d").value)||5));
+  const days=Math.min(60,Math.max(1,diff($("sd").value,$("ed").value)+1||5));
   const t=build(name,days,F.types);t.dest=$("dd").value.trim();t.sd=$("sd").value;t.ed=$("ed").value;
   if(t.sd&&t.ed&&t.ed<t.sd)t.ed=t.sd;
+  t.route=t.dest?[{place:"",mode:"home",booked:false},{place:t.dest,mode:"plane",booked:false}]:[{place:"",mode:"home",booked:false}];
   S.trips.unshift(t);save();S.cur=t.id;S.form={types:F.types};trip();
  };
 }
@@ -171,7 +172,7 @@ function trip(){
  const t=S.trips.find(x=>x.id===S.cur);if(!t)return home();
  const a=$("app");
  const groups=CATS.map(c=>[c,t.items.filter(i=>i.c===c)]).filter(g=>g[1].length);
- a.innerHTML=`<div class="top"><button class="btn ghost" id="back">Back</button><button class="btn ghost" id="del">Delete trip</button></div>
+ a.innerHTML=`<div class="top"><button class="btn ghost" id="back">Back</button><div class="row"><button class="btn ghost" id="rename">✎ Rename</button><button class="btn ghost" id="del">Delete trip</button></div></div>
  <h1>${em(t.type)} ${esc(t.name)}</h1>
  <p class="sub">${t.days} days · <span id="pc">${pct(t)}</span>% packed</p>
  ${cdCard(t)}
@@ -185,6 +186,7 @@ function trip(){
  <div class="card"><div class="row"><select id="mt" aria-label="Trip type">${Object.keys(all()).map(k=>`<option value="${esc(k)}">${esc(k)}</option>`).join("")}</select><button class="btn" id="mg" style="flex:none">Add</button></div><p class="wx" style="margin:8px 0 0">Items already on your list are skipped.</p></div>
  <div class="route-tools"><button class="btn ghost" id="reset">Uncheck everything</button><button class="btn" id="pdf">📄 Export PDF</button></div>`;
  $("back").onclick=()=>{S.cur=null;home()};bindWx(t);
+ $("rename").onclick=()=>{const next=prompt("Enter a new name for this packing list:",t.name||"");if(next===null)return;const clean=next.trim();if(!clean){alert("The name cannot be empty.");return}t.name=clean.slice(0,60);save();trip()};
  $("del").onclick=()=>{if(confirm("Delete “"+t.name+"”?")){S.trips=S.trips.filter(x=>x.id!==t.id);save();S.cur=null;home()}};
  a.querySelectorAll("[data-id]").forEach(c=>c.onchange=()=>{
   const it=t.items.find(i=>i.id===c.dataset.id);it.d=c.checked;save();
@@ -210,10 +212,10 @@ function cdTxt(t){const d=dd(t.sd);
  return d+t.days>0?"Day "+(1-d)+" of "+t.days:"Trip finished"}
 const isoAdd=(x,k)=>{const d=new Date(x+"T00:00:00");d.setDate(d.getDate()+k);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
 function cdCard(t){
- const f=x=>x?new Date(x+"T00:00:00").toLocaleDateString(LANG==="de"?"de-DE":undefined,{weekday:"short",day:"numeric",month:"short"}):"";
+ const f=x=>x?new Date(x+"T00:00:00").toLocaleDateString(LANG==="de"?"de-DE":LANG==="zh"?"zh-CN":"en-GB",{weekday:"short",day:"numeric",month:"short"}):"";
  const ed=t.sd?(t.ed||isoAdd(t.sd,t.days-1)):"";
  return `<div class="card"><div style="font-size:1.5rem;font-weight:800;line-height:1.2">${t.sd?cdTxt(t):"No dates yet"}</div><div style="color:var(--mute)">${t.sd?f(t.sd)+" to "+f(ed)+" · "+t.days+" days":"Set a start date to see the countdown"}</div>
- <div class="row" style="margin-top:10px"><div style="flex:1"><label for="sdc" style="margin-top:0">Start</label><input id="sdc" type="date" value="${t.sd||""}"></div><div style="flex:1"><label for="edc" style="margin-top:0">End</label><input id="edc" type="date" value="${ed}"></div></div></div>`}
+ <div class="date-pair" style="margin-top:12px"><div><label for="sdc">Start date</label><input id="sdc" type="date" value="${t.sd||""}"></div><div><label for="edc">End date</label><input id="edc" type="date" value="${ed}"></div></div></div>`}
 function typeEd(){
  const F=S.form,ed=F.edit;
  if(!ed)return `<div class="row" style="margin-top:10px;flex-wrap:wrap"><button type="button" class="btn ghost" id="nt">New trip type</button>${F.types[0]?`<button type="button" class="btn ghost" id="et">Edit “${esc(F.types[0])}”</button>`:""}</div>`;
@@ -227,113 +229,183 @@ function typeEd(){
 const CATEMOJI={"Documents":"🛂","Clothes":"👕","Toiletries":"🧴","Tech":"🔌","Gear":"🎒","Kitchen":"🍳","Before leaving":"🏠"};
 const ITEMEMOJI=[
  [/passport|id card|licen[cs]e|permit|visa|ticket|booking|insurance|chart|pass/i,"🛂"],
- [/shirt|t-shirt|pants|shorts|underwear|sock|jacket|coat|sweater|pullover|pyjama|shoe|sandals|swimsuit|trunks|hat|gloves|beanie|thermal|fleece|rain pants|gaiter/i,"👕"],
- [/tooth|shampoo|soap|deodorant|razor|comb|tissue|floss|nail|sun cream|lip balm|insect repellent|medication|first-aid/i,"🧴"],
- [/phone|charger|power bank|adapter|earphone|camera|sd card|sim card|offline maps|card reader/i,"🔌"],
- [/tent|sleeping|mat|headlamp|water bottle|hydration|backpack|day bag|dry bag|sunglasses|umbrella|snack|stove|fuel|lighter|trash|towel|tape|scissors|helmet|goggles|board|wrist guard|lock|keys|wallet/i,"🎒"],
+ [/wallet|purse|money|cash|credit card/i,"👛"],
+ [/shirt|t-shirt|hiking shirt/i,"👕"],[/pants|shorts|trousers|rain pants/i,"👖"],[/sock|underwear|thermal|base layer/i,"🧦"],[/jacket|coat|sweater|pullover|fleece/i,"🧥"],[/shoe|boot|sandals/i,"🥾"],[/pyjama|sleepwear/i,"🛌"],[/swimsuit|trunks/i,"🩱"],[/hat|beanie/i,"🧢"],[/gloves/i,"🧤"],[/gaiter|scarf/i,"🧣"],
+ [/toothbrush|toothpaste|tooth/i,"🪥"],[/shampoo|conditioner/i,"🧴"],[/soap|body wash/i,"🧼"],[/deodorant/i,"🧴"],[/razor/i,"🪒"],[/comb/i,"💇"],[/tissue|wet wipe/i,"🧻"],[/dental floss|floss/i,"🦷"],[/nail clipper/i,"✂️"],[/sun cream|sunscreen/i,"🧴"],[/lip balm/i,"💄"],[/insect repellent/i,"🦟"],[/medication|medicine|pills/i,"💊"],[/first-aid/i,"🩹"],
+ [/phone/i,"📱"],[/charger/i,"🔋"],[/power bank/i,"🔌"],[/adapter/i,"🔌"],[/earphone|headphone/i,"🎧"],[/camera/i,"📷"],[/sd card|sim card|card reader/i,"💾"],[/offline maps/i,"🗺️"],
+ [/tent/i,"⛺"],[/sleeping bag/i,"🛏️"],[/mat/i,"🧘"],[/headlamp|torch/i,"🔦"],[/water bottle|hydration/i,"🧴"],[/backpack|day bag|day pack|flying backpack/i,"🎒"],[/dry bag/i,"🧳"],[/sunglasses/i,"🕶️"],[/umbrella/i,"☂️"],[/snack|food/i,"🍎"],[/stove|fuel|lighter/i,"🔥"],[/trash|waste/i,"🗑️"],[/towel/i,"🧖"],[/tape|scissors/i,"✂️"],[/helmet/i,"⛑️"],[/goggles/i,"🥽"],[/board/i,"🏂"],[/wrist guard/i,"🛡️"],[/lock|keys/i,"🔑"],
  [/cookware|plate|cutlery|cup|kitchen|dish|food|salt|oil/i,"🍳"],
  [/trash|plants|appliances|lock doors|windows/i,"🏠"]
 ];
 function itemEmoji(name){for(const [re,emoji] of ITEMEMOJI)if(re.test(name))return emoji;return "📦"}
 function categoryLabel(c){return (CATEMOJI[c]||"📦")+" "+(LANG==="de"?(DECAT[c]||c):c)}
 function wxCard(t){
- const stops=t.route||[];
- return `<h2>Weather · next 3 days</h2><div class="card">
- <div class="top" style="margin:0"><b>🌤️ ${esc(t.dest||"Choose a destination")}</b><a href="https://www.meteoblue.com/" target="_blank" rel="noopener">Meteoblue ↗</a></div>
- <div class="wx" id="wxo">${t.dest?"Loading 3-day forecast…":"Set a destination below to see the forecast."}</div>
- </div>
- <h2>Journey planner</h2><div class="card">
- <p class="wx" style="margin-top:0">Add each stop in order. Choose the transport used to reach each stop. The map connects your locations with illustrative straight lines.</p>
- <div id="route-editor">${stops.map((s,i)=>routeStopHTML(s,i)).join("")}</div>
- <div class="route-tools"><button class="btn ghost" type="button" id="addstop">＋ Add destination</button><button class="btn" type="button" id="saveroute">Save journey & show map</button></div>
- <div id="route-msg" class="wx" aria-live="polite"></div><div id="map"></div>
- </div>`;
+ return `<h2>Weather · 3-day forecast</h2><div class="card"><div class="wx" id="wxo" style="margin:0">Loading forecast…</div>
+ <div class="place-wrap" style="margin-top:12px"><div class="row"><input id="wxin" maxlength="90" placeholder="Search a city" aria-label="Add a city" autocomplete="off"><button class="btn ghost" type="button" id="wxadd" style="flex:none">Add a city</button></div><div class="place-suggestions" id="wxsug" hidden></div></div>
+ <div class="wx" style="font-size:.78rem;margin-top:10px">3-day forecast starting today. Add or remove cities as you like. <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo ↗</a></div></div>
+ <h2>Journey planner</h2><div class="card"><p class="wx" style="margin-top:0">Add your starting point and destinations in order, and choose the transport for each leg.</p><div id="route-editor"></div><div class="route-tools"><button class="btn ghost" type="button" id="addstop">＋ Add destination</button><button class="btn" type="button" id="saveroute">Save journey & show map</button></div><div id="route-msg" class="wx" aria-live="polite"></div><div id="map"></div></div>`;
 }
 function routeStopHTML(s,i){
- const modes=[["home","🧳 Home"],["plane","✈️ Airplane"],["train","🚆 Train"],["bus","🚌 Bus"],["car","🚗 Car"],["ship","🚢 Ship"],["walk","🚶 Walk"]];
+ const modes=[["home","🧳 Start"],["plane","✈️ Airplane"],["train","🚆 Train"],["bus","🚌 Bus"],["car","🚗 Car"],["ship","🚢 Ship"],["walk","🚶 Walk"]];
+ const first=i===0;
  return `<div class="route-stop" data-stop="${i}">
- <input aria-label="Stop ${i+1}" class="stop-place" maxlength="90" placeholder="${i===0?"Starting point (e.g. Home)":"Destination"}" value="${esc(s.place||"")}">
- <select class="stop-mode" aria-label="Transport to stop ${i+1}">${modes.map(([v,l])=>`<option value="${v}" ${((s.mode||(i===0?"home":"plane"))===v)?"selected":""}>${l}</option>`).join("")}</select>
- <label class="route-booked"><input type="checkbox" class="stop-booked" ${s.booked?"checked":""}> ${LANG==="de"?"Ticket gebucht":"Ticket booked"}</label>
+ <div class="place-wrap"><input aria-label="${first?"Starting point":"Destination"} ${i+1}" class="stop-place" maxlength="90" placeholder="${first?"Starting point (e.g. Home)":"Search city or destination"}" value="${esc(s.place||"")}" autocomplete="off"><div class="place-suggestions" hidden></div></div>
+ <select class="stop-mode" aria-label="Transport to ${first?"starting point":"stop "+(i+1)}" ${first?"disabled":""}>${modes.map(([v,l])=>`<option value="${v}" ${((s.mode||(first?"home":"plane"))===v)?"selected":""}>${l}</option>`).join("")}</select>
+ <label class="route-booked"><input type="checkbox" class="stop-booked" ${s.booked?"checked":""} ${first?"disabled":""}> ${LANG==="de"?"Ticket gebucht":LANG==="zh"?"车票已预订":"Ticket booked"}</label>
  <button type="button" class="x" data-removestop="${i}" aria-label="Remove stop">×</button>
  </div>`;
 }
 function bindWx(t){
  if($("sdc"))$("sdc").onchange=()=>{const a=$("sdc").value;t.sd=a;t.ed=a?isoAdd(a,t.days-1):"";save();trip()};
  if($("edc"))$("edc").onchange=()=>{const b=$("edc").value;if(!b||!t.sd)return;t.ed=b<t.sd?t.sd:b;t.days=Math.max(1,Math.min(60,Math.round((new Date(t.ed+"T00:00:00")-new Date(t.sd+"T00:00:00"))/864e5)+1));save();trip()};
- if(t.dest)loadWx(t);
- let route=(t.route&&t.route.length)?t.route:[{place:t.dest||"",mode:"home"}];
+ bindCities(t);loadWx(t);
+ let route=(t.route&&t.route.length)?t.route.map(s=>({...s,geo:s.geo||null})):[];
+ if(route.length<2)route=[route[0]||{place:"",mode:"home",booked:false},{place:t.dest||"",mode:"plane",booked:false}];
  const editor=$("route-editor");
  const redraw=()=>{editor.innerHTML=route.map(routeStopHTML).join("");bindRouteRows()};
  const bindRouteRows=()=>{
   editor.querySelectorAll("[data-removestop]").forEach(b=>b.onclick=()=>{route.splice(Number(b.dataset.removestop),1);redraw()});
-  editor.querySelectorAll(".stop-place").forEach((el,i)=>el.oninput=()=>{route[i].place=el.value});
+  editor.querySelectorAll(".stop-place").forEach((el,i)=>{
+   const box=el.parentElement.querySelector(".place-suggestions");let timer=null;
+   el.oninput=()=>{
+    route[i].place=el.value;route[i].geo=null;clearTimeout(timer);
+    if(el.value.trim().length<2){box.hidden=true;return}
+    timer=setTimeout(async()=>{
+     try{
+      const data=await(await fetch("https://geocoding-api.open-meteo.com/v1/search?count=8&language=en&name="+encodeURIComponent(el.value.trim()))).json();
+      const results=data.results||[];
+      box.innerHTML=results.map((r,j)=>`<button type="button" data-place-index="${j}">${esc([r.name,r.admin1,r.country].filter(Boolean).join(", "))}</button>`).join("")||`<div style="padding:10px;color:var(--mute)">No matching places found</div>`;
+      box.hidden=false;
+      box.querySelectorAll("[data-place-index]").forEach(btn=>btn.onclick=()=>{
+       const r=results[Number(btn.dataset.placeIndex)];
+       route[i].place=[r.name,r.admin1,r.country].filter(Boolean).join(", ");
+       route[i].geo={lat:r.latitude,lon:r.longitude,name:r.name,country:r.country};
+       el.value=route[i].place;box.hidden=true;save();
+      });
+     }catch(e){box.hidden=true}
+    },280);
+   };
+   el.onblur=()=>setTimeout(()=>{box.hidden=true},180);
+  });
   editor.querySelectorAll(".stop-mode").forEach((el,i)=>el.onchange=()=>{route[i].mode=el.value});
   editor.querySelectorAll(".stop-booked").forEach((el,i)=>el.onchange=()=>{route[i].booked=el.checked;save()});
  };
- bindRouteRows();
- $("addstop").onclick=()=>{route.push({place:"",mode:"plane"});redraw();editor.querySelectorAll(".stop-place")[route.length-1].focus()};
+ redraw();
+ $("addstop").onclick=()=>{route.push({place:"",mode:"plane",booked:false,geo:null});redraw();editor.querySelectorAll(".stop-place")[route.length-1].focus()};
  $("saveroute").onclick=async()=>{
-  route=[...editor.querySelectorAll(".route-stop")].map((row,i)=>({place:row.querySelector(".stop-place").value.trim(),mode:row.querySelector(".stop-mode").value,booked:row.querySelector(".stop-booked").checked}));
-  route=route.filter(s=>s.place);
-  if(!route.length){$("route-msg").textContent="Add at least one location.";return}
-  t.route=route;t.dest=route[route.length-1].place;t.geo=null;save();
+  route=[...editor.querySelectorAll(".route-stop")].map((row,i)=>({
+   place:row.querySelector(".stop-place").value.trim(),
+   mode:row.querySelector(".stop-mode").value,
+   booked:row.querySelector(".stop-booked").checked,
+   
+   geo:route[i]?.geo||null
+  }));
+  route=route.filter((s,i)=>s.place||i===0);
+  if(!route.some((s,i)=>i>0&&s.place)){ $("route-msg").textContent="Add at least one destination after your starting point.";return }
+  t.route=route;t.dest=route.find((s,i)=>i>0&&s.place)?.place||route.find(s=>s.place)?.place||"";t.geo=null;save();
   $("route-msg").textContent="Finding locations and drawing your journey…";
-  await drawRoute(t);
-  if(t.dest)loadWx(t);
+  await drawRoute(t);loadWx(t);
  };
  if(t.route&&t.route.length)drawRoute(t);
 }
 const MODEICON={home:"🧳",plane:"✈️",train:"🚆",bus:"🚌",car:"🚗",ship:"🚢",walk:"🚶"};
-async function geocodePlace(place){
- const url="https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&name="+encodeURIComponent(place);
+async function geocodePlace(place,knownGeo){
+ if(knownGeo&&Number.isFinite(knownGeo.lat)&&Number.isFinite(knownGeo.lon))return {lat:knownGeo.lat,lon:knownGeo.lon,name:knownGeo.name||place};
+ const url="https://geocoding-api.open-meteo.com/v1/search?count=10&language=en&name="+encodeURIComponent(place);
  const data=await(await fetch(url)).json();
- if(!data.results||!data.results.length)throw new Error("Could not find "+place);
- return {lat:data.results[0].latitude,lon:data.results[0].longitude,name:data.results[0].name};
+ if(!data.results||!data.results.length)throw new Error("Could not find "+place+". Choose the correct city from the suggestions.");
+ const q=place.toLowerCase();
+ const r=data.results.find(x=>[x.name,x.admin1,x.country].filter(Boolean).join(", ").toLowerCase()===q)||data.results[0];
+ return {lat:r.latitude,lon:r.longitude,name:r.name,country:r.country};
+}
+async function getLegGeometry(a,b,mode){
+ // OSRM's public demo server provides road routes; the OSM routing service provides walking routes.
+ // Rail, air and sea routing require specialist timetable/network data, so those legs use a direct geodesic.
+ if(mode==="car"||mode==="bus"){
+  const u=`https://router.project-osrm.org/route/v1/driving/${a.lon},${a.lat};${b.lon},${b.lat}?overview=full&geometries=geojson&steps=false`;
+  const d=await(await fetch(u)).json();if(d.code==="Ok"&&d.routes?.[0])return {coords:d.routes[0].geometry.coordinates.map(c=>[c[1],c[0]]),kind:"road"};
+ }
+ if(mode==="walk"){
+  const u=`https://routing.openstreetmap.de/routed-foot/route/v1/driving/${a.lon},${a.lat};${b.lon},${b.lat}?overview=full&geometries=geojson`;
+  const d=await(await fetch(u)).json();if(d.code==="Ok"&&d.routes?.[0])return {coords:d.routes[0].geometry.coordinates.map(c=>[c[1],c[0]]),kind:"foot"};
+ }
+ return {coords:[[a.lat,a.lon],[b.lat,b.lon]],kind:"direct"};
 }
 async function drawRoute(t){
  const mapEl=$("map");if(!mapEl||typeof L==="undefined")return;
- const route=t.route||[];if(!route.length)return;
- const msg=$("route-msg");if(msg)msg.textContent="Finding locations…";
+ const route=(t.route||[]).filter(s=>s.place);if(!route.length)return;
+ const msg=$("route-msg");if(msg)msg.textContent="Finding locations and calculating available routes…";
  try{
   const points=[];
-  for(const stop of route){const p=await geocodePlace(stop.place);points.push({...p,place:stop.place,mode:stop.mode})}
+  for(const stop of route){const p=await geocodePlace(stop.place,stop.geo);points.push({...p,place:stop.place,mode:stop.mode})}
   t.routeGeo=points;save();mapEl.style.display="block";
   if(t.leafletMap){t.leafletMap.remove();t.leafletMap=null}
-  const map=L.map("map");
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"© OpenStreetMap contributors"}).addTo(map);
+  const map=L.map("map",{scrollWheelZoom:false});
+  // Carto Voyager gives a detailed, realistic road-map appearance with clear labels.
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",{
+   subdomains:"abcd",maxZoom:20,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors · © <a href="https://carto.com/attributions">CARTO</a>'
+  }).addTo(map);
   t.leafletMap=map;
-  points.forEach((p,i)=>{
-   const icon=L.divIcon({html:`<div style="font-size:25px;background:white;border:1px solid #ccd4df;border-radius:20px;padding:3px 5px;box-shadow:0 1px 5px #777">${i===0?"🧳":(MODEICON[p.mode]||"📍")}</div>`,className:"",iconSize:[38,38],iconAnchor:[19,19]});
-   L.marker([p.lat,p.lon],{icon}).addTo(map).bindPopup(`<b>${esc(p.place)}</b><br>${MODEICON[p.mode]||"📍"} ${p.mode}`);
-  });
-  if(points.length>1){
-   L.polyline(points.map(p=>[p.lat,p.lon]),{color:"#2a5db0",weight:3,dashArray:"7 7"}).addTo(map);
-   points.slice(1).forEach((p,i)=>{
-    const mid=[(points[i].lat+p.lat)/2,(points[i].lon+p.lon)/2];
-    L.marker(mid,{icon:L.divIcon({html:`<div style="font-size:21px">${MODEICON[p.mode]||"✈️"}</div>`,className:"",iconSize:[28,28],iconAnchor:[14,14]})}).addTo(map);
-   });
+  const bounds=[];let directCount=0;
+  for(let i=0;i<points.length;i++){
+   const p=points[i];
+   const icon=L.divIcon({html:`<div style="font-size:24px;background:#fff;border:2px solid #fff;border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px #24344a66">${i===0?"🧳":(MODEICON[p.mode]||"📍")}</div>`,className:"",iconSize:[38,38],iconAnchor:[19,19]});
+   L.marker([p.lat,p.lon],{icon}).addTo(map).bindPopup(`<b>${esc(p.place)}</b><br>${i===0?"🧳 Start":(MODEICON[p.mode]||"📍")+" "+esc(p.mode||"stop")}`);
+   bounds.push([p.lat,p.lon]);
+   if(i>0){
+    const leg=await getLegGeometry(points[i-1],p,p.mode);
+    if(leg.kind==="direct")directCount++;
+    const style=leg.kind==="direct"?{color:"#d97706",weight:3,dashArray:"7 8",opacity:.9}:{color:leg.kind==="foot"?"#16845b":"#2563eb",weight:5,opacity:.88,lineCap:"round",lineJoin:"round"};
+    L.polyline(leg.coords,style).addTo(map).bindPopup(`${MODEICON[p.mode]||"📍"} ${esc(p.mode)}: ${esc(points[i-1].place)} → ${esc(p.place)}<br>${leg.kind==="direct"?"Direct illustrative connection":"Routed path"}`);
+    leg.coords.forEach(c=>bounds.push(c));
+   }
   }
-  map.fitBounds(points.map(p=>[p.lat,p.lon]),{padding:[25,25],maxZoom:6});
-  if(msg)msg.textContent="Journey mapped. Lines are illustrative connections, not navigational routes.";
+  if(points.length===1)map.setView([points[0].lat,points[0].lon],10);else map.fitBounds(bounds,{padding:[28,28],maxZoom:7});
+  setTimeout(()=>map.invalidateSize(),100);
+  if(msg)msg.textContent=directCount?`Map ready. Road and walking legs follow available routes; ${directCount} leg(s) use direct connections because train, air or sea network routing is not available here.`:"Map ready. Road and walking legs follow available routes.";
  }catch(e){if(msg)msg.textContent=e.message+" — check the place name or internet connection."}
 }
+function diff(a,b){return Math.round((new Date(b+"T00:00:00")-new Date(a+"T00:00:00"))/864e5)}
+const wmo=c=>c===0?"☀️":c<3?"🌤️":c===3?"☁️":c<50?"🌫️":c<60?"🌦️":c<70?"🌧️":c<80?"❄️":c<83?"🌧️":c<90?"🌨️":"⛈️";
+const cityList=t=>{const ds=(t.route||[]).filter((r,i)=>i>0&&r.place).map(r=>({place:r.place,geo:r.geo||null}));return t.wxCities||(ds.length?ds:t.dest?[{place:t.dest,geo:null}]:[])};
 async function loadWx(t){
- const o=$("wxo");if(!o||!t.dest)return;o.textContent="Loading forecast…";
- try{
-  if(!t.geo){const p=await geocodePlace(t.dest);t.geo={lat:p.lat,lon:p.lon};save()}
-  const url=`https://api.open-meteo.com/v1/forecast?latitude=${t.geo.lat}&longitude=${t.geo.lon}&daily=temperature_2m_max,temperature_2m_min,wind_speed_10m_max&forecast_days=3&timezone=auto`;
-  const data=await(await fetch(url)).json(),d=data.daily;
-  if(!d||!d.time)throw new Error("Forecast unavailable");
-  const days=d.time.map((date,i)=>`<div class="weather-day"><b>${new Date(date+"T12:00:00").toLocaleDateString(LANG==="de"?"de-DE":"en-GB",{weekday:"short",day:"numeric",month:"short"})}</b><div class="temp">${Math.round(d.temperature_2m_max[i])}° / ${Math.round(d.temperature_2m_min[i])}°C</div><small>🌡️ Max / Min</small><small>💨 ${Math.round(d.wind_speed_10m_max[i])} km/h</small></div>`).join("");
-  o.innerHTML=`<div class="weather-grid">${days}</div><small>Forecast by <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> · More details: <a href="https://www.meteoblue.com/" target="_blank" rel="noopener">Meteoblue</a></small>`;
- }catch(e){o.textContent="Could not load the forecast. Check the destination and internet connection."}
+ const o=$("wxo");if(!o)return;
+ const list=cityList(t);
+ if(!list.length){o.textContent="Add a city to see its forecast.";return}
+ o.textContent="Loading forecast…";
+ const loc=LANG==="de"?"de-DE":LANG==="zh"?"zh-CN":"en-GB",fd=x=>new Date(x+"T12:00:00").toLocaleDateString(loc,{weekday:"short",day:"numeric",month:"short"});
+ const blocks=await Promise.all(list.map(async(c,i)=>{
+  const head=`<div style="margin-top:8px"><div class="top" style="margin:0"><b>📍 ${esc(c.place)}</b><button type="button" class="x" data-wxdel="${i}" aria-label="Remove ${esc(c.place)}">×</button></div>`;
+  try{
+   const p=await geocodePlace(c.place,c.geo);
+   const d=(await(await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max&timezone=auto&forecast_days=3`)).json()).daily;
+   if(!d?.time)throw 0;
+   return head+`<div class="weather-grid">${d.time.map((x,k)=>`<div class="weather-day"><b>${fd(x)}</b><div class="temp">${wmo(d.weather_code[k])} ${Math.round(d.temperature_2m_max[k])}° / ${Math.round(d.temperature_2m_min[k])}°</div><small>💧 ${d.precipitation_probability_max[k]??"–"}% · 💨 ${Math.round(d.wind_speed_10m_max[k])} km/h</small></div>`).join("")}</div></div>`;
+  }catch(e){return head+`<div class="wx">Forecast unavailable. Check the city name and internet connection.</div></div>`}
+ }));
+ o.innerHTML=blocks.join("");
+ o.querySelectorAll("[data-wxdel]").forEach(b=>b.onclick=()=>{t.wxCities=cityList(t).filter((_,i)=>i!==+b.dataset.wxdel);save();loadWx(t)});
 }
-const DE={"Passport or ID card": "Reisepass oder Ausweis", "Tickets and bookings": "Tickets und Buchungen", "Wallet and cards": "Geldbeutel und Karten", "Keys": "Schlüssel", "Phone and charger": "Handy und Ladegerät", "Toothbrush and toothpaste": "Zahnbürste und Zahnpasta", "Deodorant": "Deo", "Medication": "Medikamente", "T-shirts": "T-Shirts", "Casual pants or shorts": "Freizeithose oder Shorts", "Underwear": "Unterwäsche", "Socks": "Socken", "Jacket or coat": "Jacke oder Mantel", "Comfortable shoes": "Bequeme Schuhe", "Day bag": "Tagesrucksack", "Snacks": "Snacks", "Hiking shoes": "Wanderschuhe", "Hiking pants": "Wanderhose", "Hiking shirts": "Wandershirts", "Hiking socks": "Wandersocken", "Rain jacket": "Regenjacke", "Hat (sun or hiking)": "Sonnen- oder Wanderhut", "Water bottle": "Trinkflasche", "First-aid kit": "Erste-Hilfe-Set", "Headlamp": "Stirnlampe", "Offline maps": "Offline-Karten", "Sun cream": "Sonnencreme", "Travel insurance papers": "Reiseversicherungsunterlagen", "Driver’s licence": "Führerschein", "Sweater or pullover": "Pullover", "Pyjamas": "Schlafanzug", "Swimsuit or trunks": "Badeanzug oder Badehose", "Power adapter": "Reiseadapter", "Power bank": "Powerbank", "Earphones + charger": "Kopfhörer + Ladegerät", "Sunglasses": "Sonnenbrille", "Umbrella": "Regenschirm", "Travel locks": "Reiseschlösser", "Laundry bag": "Wäschebeutel", "Shampoo and conditioner": "Shampoo und Spülung", "Soap or body wash": "Seife oder Duschgel", "Comb": "Kamm", "Razor": "Rasierer", "Tissues and wet wipes": "Taschentücher und Feuchttücher", "Dental floss": "Zahnseide", "Nail clippers": "Nagelknipser", "Take out the trash": "Müll rausbringen", "Water the plants": "Pflanzen gießen", "Switch off appliances": "Geräte ausschalten", "Lock doors and windows": "Türen und Fenster abschließen", "Campsite booking": "Campingplatz-Buchung", "Sandals": "Sandalen", "Tent": "Zelt", "Sleeping bag": "Schlafsack", "Sleeping mat": "Isomatte", "Lighter": "Feuerzeug", "Trash bags": "Müllsäcke", "Camping stove and fuel": "Campingkocher und Brennstoff", "Quick-dry towel": "Schnelltrocknendes Handtuch", "Cookware": "Kochgeschirr", "Plates and cutlery": "Teller und Besteck", "Cups": "Tassen", "Kitchen paper": "Küchenpapier", "Dish soap and sponge": "Spülmittel und Schwamm", "Food and snacks": "Essen und Snacks", "Salt and cooking oil": "Salz und Speiseöl", "Insect repellent": "Insektenschutz", "Lift pass": "Skipass", "Snowboard jacket": "Snowboardjacke", "Snowboard pants": "Snowboardhose", "Thermal layers": "Thermounterwäsche", "Snowboard socks": "Snowboardsocken", "Gloves": "Handschuhe", "Beanie": "Mütze", "Neck gaiter": "Halswärmer", "Board and boots": "Board und Schuhe", "Helmet": "Helm", "Goggles": "Skibrille", "Wrist guards": "Handgelenkschützer", "Lip balm": "Lippenpflege", "NZeTA (if required)": "NZeTA (falls erforderlich)", "International driving permit": "Internationaler Führerschein", "Hut or campsite bookings": "Hütten- oder Campingplatzbuchungen", "Declare outdoor gear and food on arrival": "Outdoor-Ausrüstung und Lebensmittel bei Ankunft deklarieren", "Merino base layers": "Merino-Funktionsunterwäsche", "Fleece or warm layer": "Fleece oder warme Schicht", "Rain pants": "Regenhose", "Warm hat and gloves": "Warme Mütze und Handschuhe", "Day pack": "Tagesrucksack", "Dry bag": "Wasserdichter Packsack", "Power adapter (type I)": "Reiseadapter (Typ I)", "Clean boots and outdoor gear (NZ biosecurity)": "Schuhe und Ausrüstung reinigen (NZ-Biosicherheit)", "Warm jacket": "Warme Jacke", "Documents": "Dokumente", "Clothes": "Kleidung", "Toiletries": "Hygiene", "Tech": "Technik", "Gear": "Ausrüstung", "Kitchen": "Küche", "Before leaving": "Vor der Abreise", "Fluglager": "Fluglager", "Licences (SPL, BZF, medical)": "Lizenzen (SPL, BZF, Medical)", "ICAO chart": "ICAO-Karte", "Flying shoes": "Flugschuhe", "Flying pants": "Flughose", "Anti-UV jacket": "UV-Schutzjacke", "Sun protection sleeves": "Sonnenschutz-Ärmel", "Sun hat": "Sonnenhut", "Flying backpack": "Flugrucksack", "Hydration bladder": "Trinksack", "Adhesive tape": "Klebeband", "Scissors": "Schere", "Phone holder (flying)": "Handyhalter (Fliegen)", "SD card + card reader": "SD-Karte + Kartenleser", "Action camera + batteries + SIM cards + charger": "Actioncam + Akkus + SIM-Karten + Ladegerät", "Anti-UV lip balm": "Lippenpflege mit UV-Schutz", "Hiking": "Wandern", "Travel": "Reise", "Camping": "Camping", "Snowboarding": "Snowboarden", "New Zealand": "Neuseeland", "Essentials": "Grundausstattung", "Packing lists": "Packlisten", "One list for every trip.": "Für jede Reise die passende Liste.", "No trips yet. Plan your first one below.": "Noch keine Reisen. Plane unten deine erste.", "New trip": "Neue Reise", "Trip name": "Reisename", "Destination (for weather and map)": "Reiseziel (für Wetter und Karte)", "Number of days": "Anzahl Tage", "Travel start date": "Reisebeginn", "Travel end date": "Reiseende", "Trip types (choose one or more to combine)": "Reisearten (eine oder mehrere zum Kombinieren wählen)", "Clothing quantities adjust to the trip length. Items that appear in several types are listed once.": "Die Kleidungsmengen passen sich der Reisedauer an. Dinge, die in mehreren Reisearten vorkommen, erscheinen nur einmal.", "Create list": "Liste erstellen", "Back": "Zurück", "Delete trip": "Reise löschen", "This list is empty. Add your first item below.": "Diese Liste ist leer. Füge unten den ersten Eintrag hinzu.", "Add an item": "Eintrag hinzufügen", "Add item": "Hinzufügen", "Add a whole type": "Ganze Reiseart hinzufügen", "Add": "Hinzufügen", "Items already on your list are skipped.": "Einträge, die schon auf deiner Liste stehen, werden übersprungen.", "Uncheck everything": "Alle Haken entfernen", "No dates yet": "Noch keine Daten", "Set a start date to see the countdown": "Lege einen Reisebeginn fest, um den Countdown zu sehen", "Start": "Beginn", "End": "Ende", "New trip type": "Neue Reiseart", "Items, one per line": "Einträge, einer pro Zeile", "Save type": "Reiseart speichern", "Cancel": "Abbrechen", "Destination": "Reiseziel", "Change": "Ändern", "Set": "Festlegen", "Departs tomorrow": "Abreise morgen", "Departs today": "Abreise heute", "Trip finished": "Reise beendet", "Loading weather…": "Wetter wird geladen…", "Couldn’t find that place. Choose Change and try a city name.": "Ort nicht gefunden. Wähle „Ändern“ und gib einen Städtenamen ein.", "Weather and map need an internet connection.": "Wetter und Karte brauchen eine Internetverbindung.", "A type with that name already exists. Choose another name.": "Eine Reiseart mit diesem Namen gibt es schon. Wähle einen anderen Namen.", "Everything from that type is already on your list.": "Alles aus dieser Reiseart steht schon auf deiner Liste.", "Start a line with Documents, Clothes, Toiletries, Tech, Gear, Kitchen or Before leaving and a colon to set the category (Gear is the default). Add * to pack one per day, or *0.5 for one every two days. Passport, charger and toiletries are always included. Changes apply to new trips only.": "Beginne eine Zeile mit Dokumente, Kleidung, Hygiene, Technik, Ausrüstung, Küche oder Vor der Abreise und einem Doppelpunkt, um die Kategorie festzulegen (Standard: Ausrüstung). Mit * packst du eines pro Tag ein, mit *0.5 eines alle zwei Tage. Ausweis, Ladegerät und Hygieneartikel sind immer dabei. Änderungen gelten nur für neue Reisen.", "Category": "Kategorie", "Item name": "Name des Eintrags", "Trip type": "Reiseart", "Type name": "Name der Reiseart", "Emoji": "Emoji"};
+function bindCities(t){
+ const inp=$("wxin"),box=$("wxsug");if(!inp)return;
+ let timer,res=[];
+ const label=r=>[r.name,r.admin1,r.country].filter(Boolean).join(", ");
+ const find=async n=>(await(await fetch("https://geocoding-api.open-meteo.com/v1/search?count=6&language=en&name="+encodeURIComponent(n))).json()).results||[];
+ const pick=r=>{const l=cityList(t),p=label(r);if(!l.some(x=>x.place===p)){t.wxCities=[...l,{place:p,geo:{lat:r.latitude,lon:r.longitude,name:r.name,country:r.country}}];save()}inp.value="";box.hidden=true;loadWx(t)};
+ inp.oninput=()=>{clearTimeout(timer);if(inp.value.trim().length<2){box.hidden=true;return}
+  timer=setTimeout(async()=>{try{res=await find(inp.value.trim());
+   box.innerHTML=res.map((r,j)=>`<button type="button" data-j="${j}">${esc(label(r))}</button>`).join("")||`<div style="padding:10px;color:var(--mute)">No matching places found</div>`;
+   box.hidden=false;box.querySelectorAll("[data-j]").forEach(b=>b.onclick=()=>pick(res[+b.dataset.j]))}catch(e){box.hidden=true}},280)};
+ inp.onblur=()=>setTimeout(()=>{box.hidden=true},180);
+ const go=async()=>{const v=inp.value.trim();if(!v)return;try{const r=await find(v);if(r[0])pick(r[0]);else alert("No matching places found")}catch(e){}};
+ $("wxadd").onclick=go;inp.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();go()}};
+}
+const ZH={"Stay until":"停留至","Add a city":"添加城市","Search a city":"搜索城市","Add a city to see its forecast.":"添加城市以查看天气预报。","3-day forecast starting today. Add or remove cities as you like.":"从今天起的三天天气预报，可随意添加或删除城市。","No matching places found":"未找到匹配的地点","Forecast unavailable. Check the city name and internet connection.":"无法获取天气预报，请检查城市名称和网络连接。","Weather · 3-day forecast":"天气 · 未来三天","Loading forecast…":"正在加载天气预报…","Add a destination in the Journey planner to see its forecast.":"请在行程规划中添加目的地以查看天气预报。","Shown for each destination where you stay 2 days or more.":"显示每个停留 2 天及以上的目的地。","Forecast opens up to 16 days before arrival":"天气预报最多提前 16 天提供","Packing lists":"旅行打包清单","One list for every trip.":"每次旅行，一份清单。","New trip":"新旅程","Trip name":"旅程名称","Destination (for weather and map)":"目的地（用于天气和地图）","Number of days":"天数","Travel start date":"出发日期","Travel end date":"结束日期","Trip types (choose one or more to combine)":"旅行类型（可选择多个）","Create list":"创建清单","Back":"返回","Delete trip":"删除旅程","✎ Rename":"✎ 重命名","Rename":"重命名","Add an item":"添加物品","Add item":"添加","Add a whole type":"添加整类物品","Items already on your list are skipped.":"清单中已有的物品将自动跳过。","Uncheck everything":"取消所有勾选","No dates yet":"尚未设置日期","Set a start date to see the countdown":"设置开始日期以查看倒计时","Start":"开始","End":"结束","Start date":"开始日期","End date":"结束日期","Journey planner":"行程规划","Add destination":"添加目的地","Save journey & show map":"保存行程并显示地图","Ticket booked":"车票已预订","Weather · next 3 days":"未来三天天气","Your next destination":"下一个目的地","Upcoming destination":"即将前往的目的地","Choose a destination":"选择目的地","Destination":"目的地","Loading 3-day forecast…":"正在加载未来三天天气…","Add a destination to see its forecast.":"添加目的地以查看天气预报。","Discover nearby places":"探索附近景点","Home":"出发地","Airplane":"飞机","Train":"火车","Bus":"巴士","Car":"汽车","Ship":"轮船","Walk":"步行","Documents":"证件","Clothes":"衣物","Toiletries":"洗漱用品","Tech":"电子设备","Gear":"装备","Kitchen":"厨房用品","Before leaving":"出发前","Hiking":"徒步","Travel":"旅行","Camping":"露营","Fluglager":"滑翔飞行营","Snowboarding":"滑雪板","New Zealand":"新西兰","Essentials":"必需品","No trips yet. Plan your first one below.":"还没有旅程，请在下方创建第一份清单。","One list for every trip.":"每次旅行，一份清单。","Items, one per line":"每行填写一件物品","Save type":"保存类型","Cancel":"取消","Export PDF":"导出 PDF","Could not load the forecast. Check the destination and internet connection.":"无法加载天气预报，请检查目的地和网络连接。"};
+const DE={"Stay until":"Aufenthalt bis","Add a city":"Stadt hinzufügen","Search a city":"Stadt suchen","Add a city to see its forecast.":"Füge eine Stadt hinzu, um die Vorhersage zu sehen.","3-day forecast starting today. Add or remove cities as you like.":"3-Tage-Vorhersage ab heute. Städte kannst du frei hinzufügen oder entfernen.","No matching places found":"Keine passenden Orte gefunden","Forecast unavailable. Check the city name and internet connection.":"Vorhersage nicht verfügbar. Prüfe den Städtenamen und die Internetverbindung.","Weather · 3-day forecast":"Wetter · 3 Tage","Loading forecast…":"Vorhersage wird geladen…","Add a destination in the Journey planner to see its forecast.":"Füge im Reiseplaner ein Ziel hinzu, um die Vorhersage zu sehen.","Shown for each destination where you stay 2 days or more.":"Angezeigt für jedes Ziel mit mindestens 2 Tagen Aufenthalt.","Forecast opens up to 16 days before arrival":"Die Vorhersage ist bis zu 16 Tage vor Ankunft verfügbar","Journey planner":"Reiseplaner","Passport or ID card": "Reisepass oder Ausweis", "Tickets and bookings": "Tickets und Buchungen", "Wallet and cards": "Geldbeutel und Karten", "Keys": "Schlüssel", "Phone and charger": "Handy und Ladegerät", "Toothbrush and toothpaste": "Zahnbürste und Zahnpasta", "Deodorant": "Deo", "Medication": "Medikamente", "T-shirts": "T-Shirts", "Casual pants or shorts": "Freizeithose oder Shorts", "Underwear": "Unterwäsche", "Socks": "Socken", "Jacket or coat": "Jacke oder Mantel", "Comfortable shoes": "Bequeme Schuhe", "Day bag": "Tagesrucksack", "Snacks": "Snacks", "Hiking shoes": "Wanderschuhe", "Hiking pants": "Wanderhose", "Hiking shirts": "Wandershirts", "Hiking socks": "Wandersocken", "Rain jacket": "Regenjacke", "Hat (sun or hiking)": "Sonnen- oder Wanderhut", "Water bottle": "Trinkflasche", "First-aid kit": "Erste-Hilfe-Set", "Headlamp": "Stirnlampe", "Offline maps": "Offline-Karten", "Sun cream": "Sonnencreme", "Travel insurance papers": "Reiseversicherungsunterlagen", "Driver’s licence": "Führerschein", "Sweater or pullover": "Pullover", "Pyjamas": "Schlafanzug", "Swimsuit or trunks": "Badeanzug oder Badehose", "Power adapter": "Reiseadapter", "Power bank": "Powerbank", "Earphones + charger": "Kopfhörer + Ladegerät", "Sunglasses": "Sonnenbrille", "Umbrella": "Regenschirm", "Travel locks": "Reiseschlösser", "Laundry bag": "Wäschebeutel", "Shampoo and conditioner": "Shampoo und Spülung", "Soap or body wash": "Seife oder Duschgel", "Comb": "Kamm", "Razor": "Rasierer", "Tissues and wet wipes": "Taschentücher und Feuchttücher", "Dental floss": "Zahnseide", "Nail clippers": "Nagelknipser", "Take out the trash": "Müll rausbringen", "Water the plants": "Pflanzen gießen", "Switch off appliances": "Geräte ausschalten", "Lock doors and windows": "Türen und Fenster abschließen", "Campsite booking": "Campingplatz-Buchung", "Sandals": "Sandalen", "Tent": "Zelt", "Sleeping bag": "Schlafsack", "Sleeping mat": "Isomatte", "Lighter": "Feuerzeug", "Trash bags": "Müllsäcke", "Camping stove and fuel": "Campingkocher und Brennstoff", "Quick-dry towel": "Schnelltrocknendes Handtuch", "Cookware": "Kochgeschirr", "Plates and cutlery": "Teller und Besteck", "Cups": "Tassen", "Kitchen paper": "Küchenpapier", "Dish soap and sponge": "Spülmittel und Schwamm", "Food and snacks": "Essen und Snacks", "Salt and cooking oil": "Salz und Speiseöl", "Insect repellent": "Insektenschutz", "Lift pass": "Skipass", "Snowboard jacket": "Snowboardjacke", "Snowboard pants": "Snowboardhose", "Thermal layers": "Thermounterwäsche", "Snowboard socks": "Snowboardsocken", "Gloves": "Handschuhe", "Beanie": "Mütze", "Neck gaiter": "Halswärmer", "Board and boots": "Board und Schuhe", "Helmet": "Helm", "Goggles": "Skibrille", "Wrist guards": "Handgelenkschützer", "Lip balm": "Lippenpflege", "NZeTA (if required)": "NZeTA (falls erforderlich)", "International driving permit": "Internationaler Führerschein", "Hut or campsite bookings": "Hütten- oder Campingplatzbuchungen", "Declare outdoor gear and food on arrival": "Outdoor-Ausrüstung und Lebensmittel bei Ankunft deklarieren", "Merino base layers": "Merino-Funktionsunterwäsche", "Fleece or warm layer": "Fleece oder warme Schicht", "Rain pants": "Regenhose", "Warm hat and gloves": "Warme Mütze und Handschuhe", "Day pack": "Tagesrucksack", "Dry bag": "Wasserdichter Packsack", "Power adapter (type I)": "Reiseadapter (Typ I)", "Clean boots and outdoor gear (NZ biosecurity)": "Schuhe und Ausrüstung reinigen (NZ-Biosicherheit)", "Warm jacket": "Warme Jacke", "Documents": "Dokumente", "Clothes": "Kleidung", "Toiletries": "Hygiene", "Tech": "Technik", "Gear": "Ausrüstung", "Kitchen": "Küche", "Before leaving": "Vor der Abreise", "Fluglager": "Fluglager", "Licences (SPL, BZF, medical)": "Lizenzen (SPL, BZF, Medical)", "ICAO chart": "ICAO-Karte", "Flying shoes": "Flugschuhe", "Flying pants": "Flughose", "Anti-UV jacket": "UV-Schutzjacke", "Sun protection sleeves": "Sonnenschutz-Ärmel", "Sun hat": "Sonnenhut", "Flying backpack": "Flugrucksack", "Hydration bladder": "Trinksack", "Adhesive tape": "Klebeband", "Scissors": "Schere", "Phone holder (flying)": "Handyhalter (Fliegen)", "SD card + card reader": "SD-Karte + Kartenleser", "Action camera + batteries + SIM cards + charger": "Actioncam + Akkus + SIM-Karten + Ladegerät", "Anti-UV lip balm": "Lippenpflege mit UV-Schutz", "Hiking": "Wandern", "Travel": "Reise", "Camping": "Camping", "Snowboarding": "Snowboarden", "New Zealand": "Neuseeland", "Essentials": "Grundausstattung", "Packing lists": "Packlisten", "One list for every trip.": "Für jede Reise die passende Liste.", "No trips yet. Plan your first one below.": "Noch keine Reisen. Plane unten deine erste.", "New trip": "Neue Reise", "Trip name": "Reisename", "Destination (for weather and map)": "Reiseziel (für Wetter und Karte)", "Number of days": "Anzahl Tage", "Travel start date": "Reisebeginn", "Travel end date": "Reiseende", "Trip types (choose one or more to combine)": "Reisearten (eine oder mehrere zum Kombinieren wählen)", "Clothing quantities adjust to the trip length. Items that appear in several types are listed once.": "Die Kleidungsmengen passen sich der Reisedauer an. Dinge, die in mehreren Reisearten vorkommen, erscheinen nur einmal.", "Create list": "Liste erstellen", "Back": "Zurück", "Delete trip": "Reise löschen", "✎ Rename": "✎ Umbenennen", "Rename": "Umbenennen", "This list is empty. Add your first item below.": "Diese Liste ist leer. Füge unten den ersten Eintrag hinzu.", "Add an item": "Eintrag hinzufügen", "Add item": "Hinzufügen", "Add a whole type": "Ganze Reiseart hinzufügen", "Add": "Hinzufügen", "Items already on your list are skipped.": "Einträge, die schon auf deiner Liste stehen, werden übersprungen.", "Uncheck everything": "Alle Haken entfernen", "No dates yet": "Noch keine Daten", "Set a start date to see the countdown": "Lege einen Reisebeginn fest, um den Countdown zu sehen", "Start": "Beginn", "End": "Ende", "New trip type": "Neue Reiseart", "Items, one per line": "Einträge, einer pro Zeile", "Save type": "Reiseart speichern", "Cancel": "Abbrechen", "Destination": "Reiseziel", "Change": "Ändern", "Set": "Festlegen", "Departs tomorrow": "Abreise morgen", "Departs today": "Abreise heute", "Trip finished": "Reise beendet", "Loading weather…": "Wetter wird geladen…", "Couldn’t find that place. Choose Change and try a city name.": "Ort nicht gefunden. Wähle „Ändern“ und gib einen Städtenamen ein.", "Weather and map need an internet connection.": "Wetter und Karte brauchen eine Internetverbindung.", "A type with that name already exists. Choose another name.": "Eine Reiseart mit diesem Namen gibt es schon. Wähle einen anderen Namen.", "Everything from that type is already on your list.": "Alles aus dieser Reiseart steht schon auf deiner Liste.", "Start a line with Documents, Clothes, Toiletries, Tech, Gear, Kitchen or Before leaving and a colon to set the category (Gear is the default). Add * to pack one per day, or *0.5 for one every two days. Passport, charger and toiletries are always included. Changes apply to new trips only.": "Beginne eine Zeile mit Dokumente, Kleidung, Hygiene, Technik, Ausrüstung, Küche oder Vor der Abreise und einem Doppelpunkt, um die Kategorie festzulegen (Standard: Ausrüstung). Mit * packst du eines pro Tag ein, mit *0.5 eines alle zwei Tage. Ausweis, Ladegerät und Hygieneartikel sind immer dabei. Änderungen gelten nur für neue Reisen.", "Category": "Kategorie", "Item name": "Name des Eintrags", "Trip type": "Reiseart", "Type name": "Name der Reiseart", "Emoji": "Emoji"};
 const PH={"Lisbon in May": "Lissabon im Mai", "Lisbon": "Lissabon", "Travel pillow": "Nackenkissen", "Tent\nClothes: Socks*\nDocuments: Permit": "Zelt\nKleidung: Socken*\nDokumente: Ausweis"};
 const DECAT={"Documents": "Dokumente", "Clothes": "Kleidung", "Toiletries": "Hygiene", "Tech": "Technik", "Gear": "Ausrüstung", "Kitchen": "Küche", "Before leaving": "Vor der Abreise"};
 let LANG="en";
-try{LANG=localStorage.getItem("packing-lang")||((typeof navigator!=="undefined"&&(navigator.language||"").toLowerCase().startsWith("de"))?"de":"en")}catch(e){}
+try{LANG=localStorage.getItem("packing-lang")||((typeof navigator!=="undefined"&&(navigator.language||"").toLowerCase().startsWith("zh"))?"zh":((typeof navigator!=="undefined"&&(navigator.language||"").toLowerCase().startsWith("de"))?"de":"en"))}catch(e){}
 const nT=n=>n===1?"1 Tag":n+" Tage";
 const RULES=[
  [/^(\d+) days to go$/,(m,n)=>"Noch "+nT(+n)],
@@ -352,7 +424,10 @@ const RULES=[
  [/^\+ (.+)$/,(m,x)=>"+ "+tx(x)]
 ];
 function tx(s){
- if(LANG!=="de"||!s)return s;
+ if(!s)return s;
+ const q=s.match(/^(\d+) days?$/);if(q&&LANG!=="en")return LANG==="zh"?q[1]+" 天":nT(+q[1]);
+ if(LANG==="zh")return ZH[s]||s;
+ if(LANG!=="de")return s;
  const d=DE[s];if(typeof d==="string")return d;
  if(/°C, rain chance up to/.test(s))return s.replace(/Next (\d+) days?/,(m,n)=>n==="1"?"Nächster Tag":"Nächste "+n+" Tage").replace("Your trip dates","Deine Reisedaten").replace("(first days)","(erste Tage)").replace("(your dates are too far ahead for a forecast)","(deine Reisedaten liegen noch zu weit in der Zukunft)").replace(/° to (-?\d+)°C, rain chance up to (\d+)%/,"° bis $1°C, Regenwahrscheinlichkeit bis zu $2 %");
  let m;
@@ -372,10 +447,10 @@ function walk(root){
 }
 const _c=window.confirm.bind(window),_a=window.alert.bind(window);
 window.confirm=m=>_c(tx(m));window.alert=m=>_a(tx(m));
-const obs=new MutationObserver(()=>{if(LANG!=="de")return;obs.disconnect();walk($("app"));obs.observe($("app"),{childList:true,characterData:true,subtree:true})});
+const obs=new MutationObserver(()=>{if(LANG==="en")return;obs.disconnect();walk($("app"));obs.observe($("app"),{childList:true,characterData:true,subtree:true})});
 obs.observe($("app"),{childList:true,characterData:true,subtree:true});
-function setLang(){$("lg").textContent=LANG==="de"?"English":"Deutsch";document.documentElement.lang=LANG;document.title=LANG==="de"?"Packlisten":"Packing Lists"}
-$("lg").onclick=()=>{LANG=LANG==="de"?"en":"de";try{localStorage.setItem("packing-lang",LANG)}catch(e){}setLang();S.cur?trip():home()};
+function setLang(){$("lg").textContent=LANG==="en"?"中文 · Deutsch":LANG==="de"?"English · 中文":"English · Deutsch";document.documentElement.lang=LANG==="zh"?"zh-CN":LANG;document.title=LANG==="de"?"Packlisten":LANG==="zh"?"旅行打包清单":"Packing Lists"}
+$("lg").onclick=()=>{LANG=LANG==="en"?"zh":LANG==="zh"?"de":"en";try{localStorage.setItem("packing-lang",LANG)}catch(e){}setLang();S.cur?trip():home()};
 setLang();
 home();
 </script>
