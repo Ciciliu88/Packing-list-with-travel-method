@@ -170,8 +170,6 @@ function home(){
  </div>`;
  const exp=$("backup-export");if(exp)exp.onclick=()=>{const blob=new Blob([JSON.stringify({version:1,trips:S.trips,customTypes:C},null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="packing-list-backup.json";a.click();URL.revokeObjectURL(url)};
  const imp=$("backup-import"),file=$("backup-file");if(imp)imp.onclick=()=>file.click();if(file)file.onchange=async()=>{const f=file.files?.[0];if(!f)return;try{const data=JSON.parse(await f.text());if(!Array.isArray(data.trips))throw new Error("Invalid backup");if(confirm("Restore backup? This replaces the trips currently saved in this browser.")){S.trips=data.trips;C=data.customTypes||C;save();saveC();home()}}catch(e){alert("Could not read this backup file.")}};
- const exp=$("backup-export");if(exp)exp.onclick=()=>{const blob=new Blob([JSON.stringify({version:1,trips:S.trips,customTypes:C},null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="packing-list-backup.json";a.click();URL.revokeObjectURL(url)};
- const imp=$("backup-import"),file=$("backup-file");if(imp)imp.onclick=()=>file.click();if(file)file.onchange=async()=>{const f=file.files?.[0];if(!f)return;try{const data=JSON.parse(await f.text());if(!Array.isArray(data.trips))throw new Error("Invalid backup");if(confirm("Restore backup? This replaces the trips currently saved in this browser.")){S.trips=data.trips;C=data.customTypes||C;save();saveC();home()}}catch(e){alert("Could not read this backup file.")}};
  const keep=()=>{F.name=$("n").value;F.dest=$("dd").value;F.sd=$("sd").value;F.ed=$("ed").value};
  $("n").value=F.name||"";$("dd").value=F.dest||"";$("sd").value=F.sd||isoIn(0);$("ed").value=F.ed||isoAdd($("sd").value,4);
  const upd=()=>{if($("ed").value<$("sd").value)$("ed").value=$("sd").value;const n=diff($("sd").value,$("ed").value)+1;$("dn").textContent=n>0?n+(n===1?" day":" days"):""};
@@ -272,8 +270,6 @@ function trip(){
  document.addEventListener("click",e=>{
   if(!tripPanel.hidden&&!tripPanel.contains(e.target)&&!tripMenu.contains(e.target))closeTripMenu();
  });
- const applyItemFilter=()=>{const q=($("item-search")?.value||"").toLowerCase(),f=$("item-filter")?.value||"all";a.querySelectorAll("[data-item-row]").forEach(row=>{const it=t.items.find(x=>x.id===row.dataset.itemRow);row.style.display=(!q||it.t.toLowerCase().includes(q))&&(f==="all"||(f==="todo"&&!it.d)||(f==="done"&&it.d))?"":"none"})};
- $("item-search").oninput=applyItemFilter;$("item-filter").onchange=applyItemFilter;
  const applyItemFilter=()=>{const q=($("item-search")?.value||"").toLowerCase(),f=$("item-filter")?.value||"all";a.querySelectorAll("[data-item-row]").forEach(row=>{const it=t.items.find(x=>x.id===row.dataset.itemRow);row.style.display=(!q||it.t.toLowerCase().includes(q))&&(f==="all"||(f==="todo"&&!it.d)||(f==="done"&&it.d))?"":"none"})};
  $("item-search").oninput=applyItemFilter;$("item-filter").onchange=applyItemFilter;
  a.querySelectorAll("[data-id]").forEach(c=>c.onchange=()=>{
